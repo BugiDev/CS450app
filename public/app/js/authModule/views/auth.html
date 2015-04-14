@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-img"><img src="../images/logo-login.png"></div>
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Please Sign In</h3>
+                </div>
+                <div class="panel-body">
+
+                    <form role="form" name="authForm" ng-submit="authForm.$valid && login()" novalidate>
+                        <fieldset>
+
+                            <div class="form-group">
+                                <div class="label">Email:</div>
+                                <br>
+                                <input type="text" name="email" ng-model="user.email" class="form-control"
+                                       email-validator
+                                       ng-required="true">
+
+
+                                <div class="error_messages" ng-messages="authForm.email.$error"
+                                     ng-if="(authForm.email.$touched || authForm.$submitted) && !authForm.email.$valid">
+                                    <div ng-message="required">You have to input your email address</div>
+                                    <div ng-message="email">Email has to be valid (ex. peter@mail.com)</div>
+                                    <div ng-message="loginError">There is no user with that email</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label">Password:</div>
+                                <br>
+                                <input type="password" name="password" ng-model="user.password" class="form-control"
+                                       password-validator
+                                       ng-required="true">
+
+                                <div class="error_messages" ng-messages="authForm.password.$error"
+                                     ng-if="(authForm.password.$touched || authForm.$submitted) && !authForm.password.$valid">
+                                    <div ng-message="required">You have to input your password</div>
+                                    <div ng-message="password">Password has to be at least 8 characters long</div>
+                                </div>
+                            </div>
+
+                            <input type="submit" id="submit" class="btn btn-lg btn-met btn-block" value="Login">
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
