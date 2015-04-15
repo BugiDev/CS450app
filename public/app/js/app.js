@@ -29,6 +29,7 @@ define([
             'cs450app.userMgmt',
             'cs450app.panel',
             'LocalStorageModule',
+            'ncy-angular-breadcrumb',
 
             /*angJSDeps*/
             'ngCookies',
@@ -63,6 +64,9 @@ define([
                         'master': {
                             templateUrl: 'js/panelModule/views/panel.html'
                         }
+                    },
+                    ncyBreadcrumb: {
+                        skip: true // Never display this state in breadcrumb.
                     }
                 }).state('panel.content', {
                     views: {
@@ -77,6 +81,9 @@ define([
                         'content-holder': {
                             templateUrl: 'js/panelModule/views/content.html'
                         }
+                    },
+                    ncyBreadcrumb: {
+                        skip: true // Never display this state in breadcrumb.
                     }
                 }).state('panel.content.dashboard', {
                     url: '^/dashboard',
@@ -85,16 +92,59 @@ define([
                             controller: 'dashboardCtrl',
                             templateUrl: 'js/panelModule/views/dashboard.html'
                         }
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Dashboard' // Never display this state in breadcrumb.
                     }
                 }).state('panel.content.myProfile', {
-                url: '^/myProfile',
-                views: {
-                    'panel-content': {
-                        controller: 'myProfileCtrl',
-                        templateUrl: 'js/panelModule/views/myProfile.html'
+                    url: '^/myProfile',
+                    views: {
+                        'panel-content': {
+                            controller: 'myProfileCtrl',
+                            templateUrl: 'js/panelModule/views/myProfile.html'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label:'{{user.firstName}} {{user.lastName}}'
                     }
-                }
-            });
+                }).state('panel.content.addNewAdmin', {
+                    url: '^/addNewAdmin',
+                    views: {
+                        'panel-content': {
+                            controller: 'addNewAdminCtrl',
+                            templateUrl: 'js/panelModule/views/addNewAdminOrProfessor.html'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label:'Add New Admin'
+                    }
+                }).state('panel.content.addNewProfessor', {
+                    url: '^/addNewProfessor',
+                    views: {
+                        'panel-content': {
+                            controller: 'addNewProfessorCtrl',
+                            templateUrl: 'js/panelModule/views/addNewAdminOrProfessor.html'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label:'Add New Professor'
+                    }
+                }).state('panel.content.addNewStudent', {
+                    url: '^/addNewStudent',
+                    views: {
+                        'panel-content': {
+                            controller: 'addNewStudentCtrl',
+                            templateUrl: 'js/panelModule/views/addNewStudent.html'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label:'Add New Student'
+                    }
+                });
 
             $urlRouterProvider.otherwise('/login');
         })

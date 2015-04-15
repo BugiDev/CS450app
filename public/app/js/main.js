@@ -10,6 +10,7 @@ require.config({
         'angular-sanitize': '../bower_components/angular-sanitize/angular-sanitize',
         'angular-scenario': '../bower_components/angular-scenario/angular-scenario',
         'angular-touch': '../bower_components/angular-touch/angular-touch',
+        'angular-breadcrumb': '../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         'angular-ui-router': '../bower_components/angular-ui-router/release/angular-ui-router',
         'angular-localStorage': '../bower_components/angular-local-storage/dist/angular-local-storage',
@@ -29,6 +30,7 @@ require.config({
         'angular-messages': ['angular'],
         'angular-ui-router': ['angular'],
         'angular-localStorage': ['angular'],
+        'angular-breadcrumb':['angular'],
         'angular-mocks': {
             deps: [
                 'angular'
@@ -64,6 +66,7 @@ require([
     'angular-messages',
     'angular-ui-router',
     'angular-localStorage',
+    'angular-breadcrumb',
     'bootstrap'
 ], function (angular, app, ngCookies, ngSanitize, ngResource, ngAnimate, ngTouch, ngMessages, uiRouter, localStorage) {
     'use strict';

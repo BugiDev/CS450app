@@ -12,3 +12,16 @@ form .error_messages{
     border: 1px solid #a70532;
     padding: 5px;
 }
+
+.form-static-usertype{
+    color: #a70532;
+    background-color: #F3EDEF;
+}
+
+.breadcrumb{
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    font-size: 20px;
+}
