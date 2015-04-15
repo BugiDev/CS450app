@@ -14,45 +14,45 @@ module.exports = function (passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
-        done(null, user);
+        done(null, user._id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function (user, done) {
-
         var dUser = null;
 
-        var adminCheck = Admin.findById(user.id)
+        var adminCheck = Admin.findById(user)
             .lean()
             .exec();
 
-        var professorCheck = Professor.findById(user.id)
+        var professorCheck = Professor.findById(user)
             .lean()
             .exec();
 
-        var studentCheck = Student.findById(user.id)
+        var studentCheck = Student.findById(user)
             .lean()
             .exec();
 
         var check = adminCheck.
             then(function (user) {
                 if(user){
-                    dUser = null;
+                    dUser = user;
                 }
             })
             .chain(professorCheck)
             .then(function (user) {
                 if(user){
-                    dUser = null;
+                    dUser = user;
                 }
             })
             .chain(studentCheck)
             .then(function (user) {
                 if(user){
-                    dUser = null;
+                    dUser = user;
                 }
             })
             .onResolve(function () {
+
                 done(null, dUser);
             })
             .onReject(function (err) {

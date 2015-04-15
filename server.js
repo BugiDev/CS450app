@@ -11,7 +11,7 @@ var session = require('express-session');
 
 var configDB = require('./config/database.js');
 var mongoose = require('mongoose');
-mongoose.connect(configDB.url+configDB.dbName);
+mongoose.connect(configDB.url + configDB.dbName);
 var db = mongoose.connection;
 db.on('error', function () {
     'use strict';
@@ -25,13 +25,18 @@ db.once('open', function () {
 require('./config/passport')(passport);
 
 app.use(logger('dev'));
+app.use('/', express.static(path.join(__dirname, 'public/app')));
+app.use(cookieParser('bogdanbegovic'));
 app.use(bodyParser());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use('/' ,express.static(path.join(__dirname, 'public/app')));
 
 // required for passport
-app.use(session({ secret: 'bogdanbegovic' })); // session secret
+app.use(session({
+    secret: 'bogdanbegovic',
+    maxAge: new Date(Date.now() + 3600000),
+    rolling: true,
+    resave: true,
+    saveUninitialized: false
+})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 

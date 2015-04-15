@@ -5,7 +5,7 @@ define([
     'angular-ui-router',
     'validators/validators',
     'authModule/auth.module',
-    'dashboardModule/dashboard.module',
+    'panelModule/panel.module',
     'userMgmtModule/userMgmt.module',
     'constants/config'
 
@@ -27,7 +27,7 @@ define([
             'cs450app.validators',
             'cs450app.config',
             'cs450app.userMgmt',
-            'cs450app.dashboard',
+            'cs450app.panel',
             'LocalStorageModule',
 
             /*angJSDeps*/
@@ -58,32 +58,32 @@ define([
                         }
                     }
                 })
-                .state('dashboard', {
+                .state('panel', {
                     views: {
                         'master': {
-                            templateUrl: 'js/dashboardModule/views/dashboard.html'
+                            templateUrl: 'js/panelModule/views/panel.html'
                         }
                     }
-                }).state('dashboard.sidebarNav', {
+                }).state('panel.content', {
                     views: {
                         'sidebar-nav': {
-                            controller: 'dashboard.sidebarNav.ctrl',
-                            templateUrl: 'js/dashboardModule/views/sidebarNav.html'
-                        }
-                    }
-                }).state('dashboard.topNav', {
-                    views: {
+                            controller: 'sidebarNavCtrl',
+                            templateUrl: 'js/panelModule/views/sidebarNav.html'
+                        },
                         'top-nav': {
-                            controller: 'dashboard.topNav.ctrl',
-                            templateUrl: 'js/dashboardModule/views/topNav.html'
+                            controller: 'topNavCtrl',
+                            templateUrl: 'js/panelModule/views/topNav.html'
+                        },
+                        'content-holder': {
+                            templateUrl: 'js/panelModule/views/content.html'
                         }
                     }
-                }).state('dashboard.mainContent', {
+                }).state('panel.content.dashboard', {
                     url: '^/dashboard',
                     views: {
-                        'dashboard-content': {
-                            controller: 'dashboard.mainContent.ctrl',
-                            templateUrl: 'js/dashboardModule/views/mainContent.html'
+                        'panel-content': {
+                            controller: 'dashboardCtrl',
+                            templateUrl: 'js/panelModule/views/dashboard.html'
                         }
                     }
                 });

@@ -6,3 +6,5 @@ node_modules
 public/node_modules
 public/build
 public/deploy
+public/app/bower_components
+CS450app.iml

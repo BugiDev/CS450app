@@ -13,10 +13,6 @@ require.config({
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         'angular-ui-router': '../bower_components/angular-ui-router/release/angular-ui-router',
         'angular-localStorage': '../bower_components/angular-local-storage/dist/angular-local-storage',
-        'jquery': '../bower_components/jquery/dist/jquery.min',
-        'metisMenu': '../bower_components/metisMenu/dist/metisMenu.min',
-        'raphael':'../bower_components/raphael/raphael-min',
-        'morris':'../bower_components/morrisjs/morris.min',
         'underscore': '../bower_components/underscore/underscore-min',
         'underscore.string': '../bower_components/underscore.string/dist/underscore.string.min',
         'underscoreMixin': 'util/underscoreMixin'
@@ -33,8 +29,6 @@ require.config({
         'angular-messages': ['angular'],
         'angular-ui-router': ['angular'],
         'angular-localStorage': ['angular'],
-        'metisMenu': ['jquery'],
-        'bootstrap':['jquery'],
         'angular-mocks': {
             deps: [
                 'angular'

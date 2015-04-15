@@ -8,6 +8,7 @@ define([
         .constant('config', {
             apiBaseURL: 'http://localhost:8080/',
             authUrl: 'user/auth',
-            logoutUrl: 'user/logout'
+            logoutUrl: 'user/logout',
+            allStudentsUrl: 'user/getAllStudents'
         });
 });
