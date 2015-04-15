@@ -21,19 +21,19 @@ module.exports = function (app, passport) {
         }
     }
 
-    function adminApproved(req, res, next){
-        if(req.isAuthenticated() && req.user.userType === 'ADMIN'){
+    function adminApproved(req, res, next) {
+        if (req.isAuthenticated() && req.user.userType === 'ADMIN') {
             return next();
-        }else{
+        } else {
             res.statusCode = 401;
             res.json({poruka: 'ne moze'});
         }
     }
 
-    function adminAndProfessorApproved(req, res, next){
-        if(req.isAuthenticated() && (req.user.userType === 'ADMIN' || req.user.userType === 'PROFESSOR')){
+    function adminAndProfessorApproved(req, res, next) {
+        if (req.isAuthenticated() && (req.user.userType === 'ADMIN' || req.user.userType === 'PROFESSOR')) {
             return next();
-        }else{
+        } else {
             res.statusCode = 401;
             res.json({poruka: 'ne moze'});
         }
@@ -44,34 +44,69 @@ module.exports = function (app, passport) {
     });
 
     app.post('/user/setUserProfile', isLoggedIn, function (req, res) {
-        
+        console.dir(req.body);
+        var dUser = null;
+
+        var updateAdmin = Admin.findOneAndUpdate({'_id': req.body.user.id}, req.body.user)
+            .lean()
+            .exec();
+
+        var updateProfessor = Professor.findOneAndUpdate({'_id': req.body.user.id}, req.body.user)
+            .lean()
+            .exec();
+
+        var updateStudent = Student.findOneAndUpdate({'_id': req.body.user.id}, req.body.user)
+            .lean()
+            .exec();
+
+        var update = updateAdmin.then(function (err, doc) {
+            console.log('updateAdmin');
+            console.dir(err);
+            console.dir(doc);
+        }).chain(updateProfessor).then(function (err, doc) {
+            console.log('updateProfessor');
+            console.dir(err);
+            console.dir(doc);
+        }).chain(updateStudent).then(function (err, doc) {
+            console.log('updateStudent');
+            console.dir(err);
+            console.dir(doc);
+        })
+            .onResolve(function () {
+                console.log('uspesno');
+                //done(null, dUser);
+            })
+            .onReject(function (err) {
+                console.error(err);
+                //done(err, dUser);
+            });
     });
 
-    app.get('/user/getAllStudents', adminAndProfessorApproved, function(req, res){
-        Student.find({}, function(err, data) {
-            if(err){
+    app.get('/user/getAllStudents', adminAndProfessorApproved, function (req, res) {
+        Student.find({}, function (err, data) {
+            if (err) {
                 return res.json(err);
-            }else{
+            } else {
                 res.json(data);
             }
         });
     });
 
-    app.get('/user/getAllProfessors', adminApproved, function(req, res){
-        Professor.find({}, function(err, data) {
-            if(err){
+    app.get('/user/getAllProfessors', adminApproved, function (req, res) {
+        Professor.find({}, function (err, data) {
+            if (err) {
                 return res.json(err);
-            }else{
+            } else {
                 res.json(data);
             }
         });
     });
 
-    app.get('/user/getAllAdmins', adminApproved, function(req, res){
-        Admin.find({}, function(err, data) {
-            if(err){
+    app.get('/user/getAllAdmins', adminApproved, function (req, res) {
+        Admin.find({}, function (err, data) {
+            if (err) {
                 return res.json(err);
-            }else{
+            } else {
                 res.json(data);
             }
         });
@@ -130,8 +165,10 @@ module.exports = function (app, passport) {
                 res.statusCode = 404;
                 return res.json(info);
             } else {
-                req.logIn(user, function(err) {
-                    if (err) { return next(err); }
+                req.logIn(user, function (err) {
+                    if (err) {
+                        return next(err);
+                    }
                     return res.json(user);
                 });
             }

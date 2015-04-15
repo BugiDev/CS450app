@@ -86,7 +86,15 @@ define([
                             templateUrl: 'js/panelModule/views/dashboard.html'
                         }
                     }
-                });
+                }).state('panel.content.myProfile', {
+                url: '^/myProfile',
+                views: {
+                    'panel-content': {
+                        controller: 'myProfileCtrl',
+                        templateUrl: 'js/panelModule/views/myProfile.html'
+                    }
+                }
+            });
 
             $urlRouterProvider.otherwise('/login');
         })

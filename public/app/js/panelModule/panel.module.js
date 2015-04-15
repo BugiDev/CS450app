@@ -3,7 +3,8 @@ define([
     'angular',
     'panelModule/panel.dashboard.ctrl',
     'panelModule/panel.sidebarNav.ctrl',
-    'panelModule/panel.topNav.ctrl'
+    'panelModule/panel.topNav.ctrl',
+    'panelModule/panel.myProfile.ctrl'
 ], function (angular)/*invoke*/ {
     'use strict';
 
