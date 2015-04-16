@@ -18,7 +18,10 @@ require(['angular', 'authModule/auth.module'], function (angular, authModule) {
                     error(function (data, status, headers, config) {
                         console.log('Auth Error!');
                         console.debug(data);
-                        deferred.reject(data);
+                        deferred.reject({
+                            status: status,
+                            message: data
+                        });
                     });
 
                 return deferred.promise;

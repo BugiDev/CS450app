@@ -8,7 +8,14 @@ module.exports = function (app, passport) {
     var Admin = require('../models/admin');
     var Professor = require('../models/professor');
     var Student = require('../models/student');
+
+    var adminService = require('../services/adminService');
+    var professorService = require('../services/professorService');
+    var studentService = require('../services/studentService');
+    var mailService = require('../services/mailService');
+
     var bcrypt = require('bcrypt-nodejs');
+    var generatePassword = require('password-generator');
 
     // route middleware to make sure a user is logged in
     function isLoggedIn(req, res, next) {
@@ -43,21 +50,19 @@ module.exports = function (app, passport) {
         res.json({test: 'moze'});
     });
 
+    app.get('/sendMail', function (req, res) {
+        res.json(mailService.sendEmail());
+    });
+
     app.post('/user/setUserProfile', isLoggedIn, function (req, res) {
         console.dir(req.body);
         var dUser = null;
 
-        var updateAdmin = Admin.findOneAndUpdate({'_id': req.body.user.id}, req.body.user)
-            .lean()
-            .exec();
+        var updateAdmin = adminService.updateAdmin(req.body.user);
 
-        var updateProfessor = Professor.findOneAndUpdate({'_id': req.body.user.id}, req.body.user)
-            .lean()
-            .exec();
+        var updateProfessor = professorService.updateProfessor(req.body.user);
 
-        var updateStudent = Student.findOneAndUpdate({'_id': req.body.user.id}, req.body.user)
-            .lean()
-            .exec();
+        var updateStudent = studentService.updateStudent(req.body.user);
 
         var update = updateAdmin.then(function (err, doc) {
             console.log('updateAdmin');
@@ -83,7 +88,7 @@ module.exports = function (app, passport) {
     });
 
     app.get('/user/getAllStudents', adminAndProfessorApproved, function (req, res) {
-        Student.find({}, function (err, data) {
+        studentService.getAllStudents().then(function(err, data){
             if (err) {
                 return res.json(err);
             } else {
@@ -93,7 +98,7 @@ module.exports = function (app, passport) {
     });
 
     app.get('/user/getAllProfessors', adminApproved, function (req, res) {
-        Professor.find({}, function (err, data) {
+        professorService.getAllProfessors().then(function(err, data){
             if (err) {
                 return res.json(err);
             } else {
@@ -103,7 +108,7 @@ module.exports = function (app, passport) {
     });
 
     app.get('/user/getAllAdmins', adminApproved, function (req, res) {
-        Admin.find({}, function (err, data) {
+        adminService.getAllAdmins().then(function(err, data){
             if (err) {
                 return res.json(err);
             } else {
@@ -113,42 +118,15 @@ module.exports = function (app, passport) {
     });
 
     app.post('/user/createNewAdmin', adminApproved, function (req, res, next) {
-        passport.authenticate('local-createNewAdmin', function (err, user, info) {
-            if (err) {
-                return res.json(err);
-            }
-            if (!user) {
-                return res.json(info);
-            } else {
-                res.json(user);
-            }
-        })(req, res, next);
+        res.json(adminService.createAdmin(req.body.user));
     });
 
     app.post('/user/createNewProfessor', adminApproved, function (req, res, next) {
-        passport.authenticate('local-createNewProfessor', function (err, user, info) {
-            if (err) {
-                return res.json(err);
-            }
-            if (!user) {
-                return res.json(info);
-            } else {
-                res.json(user);
-            }
-        })(req, res, next);
+        res.json(professorService.createProfessor(req.body.user));
     });
 
     app.post('/user/createNewStudent', adminApproved, function (req, res, next) {
-        passport.authenticate('local-createNewStudent', function (err, user, info) {
-            if (err) {
-                return res.json(err);
-            }
-            if (!user) {
-                return res.json(info);
-            } else {
-                res.json(user);
-            }
-        })(req, res, next);
+        res.json(studentService.createStudent(req.body.user));
     });
 
     app.get('/user/logout', isLoggedIn, function (req, res) {

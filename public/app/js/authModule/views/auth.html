@@ -23,7 +23,6 @@
                                      ng-if="(authForm.email.$touched || authForm.$submitted) && !authForm.email.$valid">
                                     <div ng-message="required">You have to input your email address</div>
                                     <div ng-message="email">Email has to be valid (ex. peter@mail.com)</div>
-                                    <div ng-message="loginError">There is no user with that email</div>
                                 </div>
                             </div>
 
@@ -39,6 +38,20 @@
                                     <div ng-message="required">You have to input your password</div>
                                     <div ng-message="password">Password has to be at least 8 characters long</div>
                                 </div>
+                            </div>
+
+                            <div ng-show="!formNoUser">
+                                <div class="error_messages">
+                                    <div>There is no user with that email</div>
+                                </div>
+                                <br>
+                            </div>
+
+                            <div ng-show="!formError">
+                                <div class="error_messages">
+                                    <div>There was an error while trying to authenticate. Please try again later.</div>
+                                </div>
+                                <br>
                             </div>
 
                             <input type="submit" id="submit" class="btn btn-lg btn-met btn-block" value="Login">

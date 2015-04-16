@@ -11,12 +11,21 @@ require(['authModule/auth.module'], function (authModule) {
                 password: ''
             };
 
+            $scope.formError = true;
+            $scope.formNoUser = true;
+
             $scope.login = function () {
+                $scope.formError = true;
+                $scope.formNoUser = true;
                 userService.login($scope.user.email, $scope.user.password).then(
                     function (data) {
                         $location.path('/dashboard');
                     }, function (data) {
-                        $scope.authForm['email'].$setValidity('loginError', false);
+                        if(data.status === 404){
+                            $scope.formNoUser = false;
+                        }else{
+                            $scope.formError = false;
+                        }
                     });
             };
 
