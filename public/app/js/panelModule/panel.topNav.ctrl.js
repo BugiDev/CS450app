@@ -5,7 +5,7 @@ require(['panelModule/panel.module'], function (dashboardModule) {
     'use strict';
 
     dashboardModule
-        .controller('topNavCtrl', function ($scope) {
+        .controller('topNavCtrl', function ($scope, userService) {
 
             $scope.init = function(){
                 $(window).bind('load resize', function () {
@@ -36,6 +36,10 @@ require(['panelModule/panel.module'], function (dashboardModule) {
             };
 
             $scope.init();
+
+            $scope.logout = function(){
+                userService.logout();
+            };
 
         });
 });

@@ -5,41 +5,40 @@ require(['angular', 'userMgmtModule/userMgmt.module'], function (angular, userMg
     'use strict';
 
     userMgmtModule
-        .service('studentsService', function ($http, $location, $q, config) {
+        .service('adminsService', function ($http, $location, $q, config) {
             var self = this;
-            this.students = undefined;
+            this.admins = undefined;
 
-            this.getAllStudents = function(){
+            this.getAllAdmins = function(){
                 var deferred = $q.defer();
-                if(self.students){
-                    deferred.resolve(self.students);
+                if(self.admins){
+                    deferred.resolve(self.admins);
                 }else{
-                    $http.get(config.apiBaseURL + config.getAllStudentsUrl)
+                    $http.get(config.apiBaseURL + config.getAllAdminsUrl)
                         .success(function (data, status, headers, config) {
-                            console.log('All Students Success!');
-                            console.debug(data);
-                            self.students = data;
+                            console.log('All Admins Success!');
+                            self.admins = data;
                             deferred.resolve(data);
                         }).
                         error(function (data, status, headers, config) {
-                            console.log('All Students Error!');
-                            self.students = undefined;
+                            console.log('All Admins Error!');
+                            self.admins = undefined;
                             deferred.reject(data);
                         });
                 }
                 return deferred.promise;
             };
 
-            this.createNewStudent = function(student){
+            this.createNewAdmin = function(admin){
                     var deferred = $q.defer();
-                    $http.post(config.apiBaseURL + config.createNewUserUrl, {user: student})
+                    $http.post(config.apiBaseURL + config.createNewUserUrl, {user: admin})
                         .success(function (data, status, headers, config) {
-                            console.log('New Student Success!');
+                            console.log('New Admin Success!');
                             console.debug(data);
                             deferred.resolve(data);
                         }).
                         error(function (data, status, headers, config) {
-                            console.log('New Student Error!');
+                            console.log('New Admin Error!');
                             console.debug(data);
                             deferred.reject({
                                 status: status,
@@ -50,18 +49,18 @@ require(['angular', 'userMgmtModule/userMgmt.module'], function (angular, userMg
                     return deferred.promise;
             };
 
-            this.deactivateStudent = function(user){
+            this.deactivateAdmin = function(user){
                 var deferred = $q.defer();
                 $http.post(config.apiBaseURL + config.deactivateUserUrl, {id: user.id, userType: user.userType})
                     .success(function (data, status, headers, config) {
-                        console.log('Deactivate Student Success!');
+                        console.log('Deactivate admin Success!');
                         console.debug(data);
-                        var student = _.find(self.students, function(student){ return student._id === user.id; });
-                        student.isActive = false;
+                        var admin = _.find(self.admins, function(admin){ return admin._id === user.id; });
+                        admin.isActive = false;
                         deferred.resolve(data);
                     }).
                     error(function (data, status, headers, config) {
-                        console.log('Deactivate Student Error!');
+                        console.log('Deactivate admin Error!');
                         console.debug(data);
                         deferred.reject({
                             status: status,

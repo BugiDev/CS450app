@@ -30,6 +30,7 @@ define([
             'cs450app.panel',
             'LocalStorageModule',
             'ncy-angular-breadcrumb',
+            'ImageCropper',
 
             /*angJSDeps*/
             'ngCookies',
@@ -41,13 +42,15 @@ define([
             'ngTouch'
 
         ])
-        .config(function ($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
+        .config(function ($stateProvider, $urlRouterProvider, localStorageServiceProvider, $httpProvider) {
 
             //TODO promeniti za produkciju Prefix
             localStorageServiceProvider
                 .setPrefix('')
                 .setStorageType('localStorage')
                 .setNotify(true, true);
+
+            $httpProvider.interceptors.push('APIInterceptor');
 
             $stateProvider
                 .state('auth', {
@@ -113,7 +116,7 @@ define([
                     views: {
                         'panel-content': {
                             controller: 'addNewAdminCtrl',
-                            templateUrl: 'js/panelModule/views/addNewAdminOrProfessor.html'
+                            templateUrl: 'js/panelModule/views/addNewAdmin.html'
                         }
                     },
                     ncyBreadcrumb: {
@@ -125,7 +128,7 @@ define([
                     views: {
                         'panel-content': {
                             controller: 'addNewProfessorCtrl',
-                            templateUrl: 'js/panelModule/views/addNewAdminOrProfessor.html'
+                            templateUrl: 'js/panelModule/views/addNewProfessor.html'
                         }
                     },
                     ncyBreadcrumb: {
@@ -144,6 +147,42 @@ define([
                         parent: 'panel.content.dashboard',
                         label:'Add New Student'
                     }
+                }).state('panel.content.allAdmins', {
+                    url: '^/allAdmins',
+                    views: {
+                        'panel-content': {
+                            controller: 'allAdminsCtrl',
+                            templateUrl: 'js/panelModule/views/allAdmins.html'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label:'All Admins'
+                    }
+                }).state('panel.content.allProfessors', {
+                    url: '^/allProfessors',
+                    views: {
+                        'panel-content': {
+                            controller: 'allProfessorsCtrl',
+                            templateUrl: 'js/panelModule/views/allProfessors.html'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label:'All Professors'
+                    }
+                }).state('panel.content.allStudents', {
+                    url: '^/allStudents',
+                    views: {
+                        'panel-content': {
+                            controller: 'allStudentsCtrl',
+                            templateUrl: 'js/panelModule/views/allStudents.html'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label:'All Students'
+                    }
                 });
 
             $urlRouterProvider.otherwise('/login');
@@ -161,10 +200,32 @@ define([
 
             $rootScope.$on('$stateChangeStart', function (event, next, current) {
                 // if route requires auth and user is not logged in
-                if (!routeClean($location.url()) && !userService.isAuthenticated()) {
-                    // redirect back to login
-                    $location.path('/login');
-                }
+
+                userService.isAuthenticated().then(
+                    function(data){
+                        if(!data){
+                            $location.path('/login');
+                        }
+/*                        if (!routeClean($location.url())) {
+                            // redirect back to login
+                            $location.path('/login');
+                        }*/
+                    }, function(data){
+                        $location.path('/login');
+                    }
+                );
             });
+        }).factory('APIInterceptor', function($rootScope, $location, $q) {
+            return {
+                response: function (response) { return response; },
+                responseError: function(response) {
+                    if (response.status === 401) {
+                        if($location.path() !== '/login'){
+                            $location.path('/login');
+                        }
+                    }
+                    return $q.reject(response);
+                }
+            };
         });
 });

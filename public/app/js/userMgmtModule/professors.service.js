@@ -5,41 +5,40 @@ require(['angular', 'userMgmtModule/userMgmt.module'], function (angular, userMg
     'use strict';
 
     userMgmtModule
-        .service('studentsService', function ($http, $location, $q, config) {
+        .service('professorsService', function ($http, $location, $q, config) {
             var self = this;
-            this.students = undefined;
+            this.professors = undefined;
 
-            this.getAllStudents = function(){
+            this.getAllProfessors = function(){
                 var deferred = $q.defer();
-                if(self.students){
-                    deferred.resolve(self.students);
+                if(self.professors){
+                    deferred.resolve(self.professors);
                 }else{
-                    $http.get(config.apiBaseURL + config.getAllStudentsUrl)
+                    $http.get(config.apiBaseURL + config.getAllProfessorsUrl)
                         .success(function (data, status, headers, config) {
-                            console.log('All Students Success!');
-                            console.debug(data);
-                            self.students = data;
+                            console.log('All Professors Success!');
+                            self.professors = data;
                             deferred.resolve(data);
                         }).
                         error(function (data, status, headers, config) {
-                            console.log('All Students Error!');
-                            self.students = undefined;
+                            console.log('All Professors Error!');
+                            self.professors = undefined;
                             deferred.reject(data);
                         });
                 }
                 return deferred.promise;
             };
 
-            this.createNewStudent = function(student){
+            this.createNewProfessor = function(professor){
                     var deferred = $q.defer();
-                    $http.post(config.apiBaseURL + config.createNewUserUrl, {user: student})
+                    $http.post(config.apiBaseURL + config.createNewUserUrl, {user: professor})
                         .success(function (data, status, headers, config) {
-                            console.log('New Student Success!');
+                            console.log('New Professor Success!');
                             console.debug(data);
                             deferred.resolve(data);
                         }).
                         error(function (data, status, headers, config) {
-                            console.log('New Student Error!');
+                            console.log('New Professor Error!');
                             console.debug(data);
                             deferred.reject({
                                 status: status,
@@ -50,18 +49,18 @@ require(['angular', 'userMgmtModule/userMgmt.module'], function (angular, userMg
                     return deferred.promise;
             };
 
-            this.deactivateStudent = function(user){
+            this.deactivateProfessor = function(user){
                 var deferred = $q.defer();
                 $http.post(config.apiBaseURL + config.deactivateUserUrl, {id: user.id, userType: user.userType})
                     .success(function (data, status, headers, config) {
-                        console.log('Deactivate Student Success!');
+                        console.log('Deactivate professor Success!');
                         console.debug(data);
-                        var student = _.find(self.students, function(student){ return student._id === user.id; });
-                        student.isActive = false;
+                        var professor = _.find(self.professors, function(professor){ return professor._id === user.id; });
+                        professor.isActive = false;
                         deferred.resolve(data);
                     }).
                     error(function (data, status, headers, config) {
-                        console.log('Deactivate Student Error!');
+                        console.log('Deactivate professor Error!');
                         console.debug(data);
                         deferred.reject({
                             status: status,

@@ -29,8 +29,14 @@ var professorSchema = mongoose.Schema({
         type: String,
         default: 'PROFESSOR'
     },
+    isActive:{
+        type: Boolean,
+        default: true,
+        require: true
+    },
     lastLoginDate:{
-        type: Date
+        type: Date,
+        default: undefined
     },
     picture: String
 });

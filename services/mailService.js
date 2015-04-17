@@ -3,47 +3,49 @@
  */
 
 var nodemailer = require('nodemailer');
+var mailConfig = require('../config/mail');
 
 var smtpTransport = nodemailer.createTransport('SMTP', {
     service: 'Gmail',
     auth: {
         XOAuth2: {
-            user: 'bogdanbegovic@gmail.com', // Your gmail address.
+            user: mailConfig.senderEmailAddress, // Your gmail address.
             // Not @developer.gserviceaccount.com
-            clientId: '1052744439136-ghrkdg1mecqehso2ko4cd546ae9purts.apps.googleusercontent.com',
-            clientSecret: '7CrB6B9ZPyT7yNemhzFI6TNg',
-            refreshToken: '1/ln5u1FSDVbHUqesvrU69uyFJucoeKjFBIkLZ8X5ZnK8MEudVrK5jSpoR30zcRFq6',
-            accessToken: 'ya29.VwHR2aRdDZwKuPIUk_U74VlijS-hgG0Gn9SjPyjIdka8ed-3BaJNT5nmCCys5XUw3WYDR_kzgsqtww'
+            clientId: mailConfig.clientID,
+            clientSecret: mailConfig.clientSecret,
+            refreshToken: mailConfig.refreshToken,
+            accessToken: mailConfig.accessToken
         }
     }
 });
 
-var mailOptions = {
-    from: 'bogdanbegovic@gmail.com',
-    to: 'bogdanbegovic@hotmail.com',
-    subject: 'Hello',
-    generateTextFromHTML: true,
-    html: '<b>Hello world</b>'
+var mailOptions = function (receiver) {
+    'use strict';
+    return {
+        from: mailConfig.senderEmailAddress,
+        to: receiver.email,
+        subject: 'CS450app password',
+        generateTextFromHTML: true,
+        html: 'This is an email from <b>CS450app</b> with you password, for ' + receiver.accountType + ' account <br>' +
+        'Your password is <h2><b>' + receiver.password + '<b></h2><br><br>' +
+        'Please consider changing password on first login'
+    };
 };
 
 module.exports = {
 
-    sendEmail: function(){
+    sendEmail: function (receiver) {
         'use strict';
-        smtpTransport.sendMail(mailOptions, function (error, response) {
+        smtpTransport.sendMail(mailOptions(receiver), function (error, response) {
             if (error) {
                 console.log('mail error');
                 console.log(error);
                 console.trace(error);
-                smtpTransport.close();
-                return error;
             } else {
                 console.log('mail success');
                 console.log(response);
-                smtpTransport.close();
-                return response;
             }
-
+            smtpTransport.close();
         });
     }
 

@@ -27,7 +27,9 @@ require('./config/passport')(passport);
 app.use(logger('dev'));
 app.use('/', express.static(path.join(__dirname, 'public/app')));
 app.use(cookieParser('bogdanbegovic'));
-app.use(bodyParser());
+app.use(bodyParser({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
 
 // required for passport
 app.use(session({

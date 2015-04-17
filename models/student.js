@@ -1,9 +1,6 @@
 /**
  * Created by bogdanbegovic on 4/13/15.
  */
-/**
- * Created by bogdanbegovic on 4/13/15.
- */
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
@@ -25,6 +22,10 @@ var studentSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    indexNum: {
+        type: Number,
+        required: true
+    },
     userType: {
         type: String,
         default: 'STUDENT'
@@ -37,8 +38,14 @@ var studentSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    isActive:{
+        type: Boolean,
+        default: true,
+        require: true
+    },
     lastLoginDate:{
-        type: Date
+        type: Date,
+        default: undefined
     },
     picture: {
         type: String

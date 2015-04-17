@@ -61,107 +61,6 @@ module.exports = function (passport) {
             });
     });
 
-    passport.use('local-createNewAdmin', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
-        function (req, email, password, done) {
-            process.nextTick(function () {
-                Admin.findOne({ 'email': email }, function (err, user) {
-                    if (err) {
-                        return done(err);
-                    }
-                    if (user) {
-                        done(null, false, { message: 'postoji' });
-                    } else {
-
-                        var newUser = new Admin();
-                        newUser.email = email;
-                        newUser.firstName = req.body.firstName;
-                        newUser.lastName = req.body.lastName;
-                        newUser.password = newUser.generateHash(password);
-
-                        newUser.save(function (err) {
-                            if (err) {
-                                console.error(err);
-                                return done(err, newUser);
-                            }
-                            return done(null, newUser);
-                        });
-                    }
-                });
-            });
-        }));
-
-    passport.use('local-createNewProfessor', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
-        function (req, email, password, done) {
-            process.nextTick(function () {
-                Professor.findOne({ 'email': email }, function (err, user) {
-                    if (err) {
-                        return done(err);
-                    }
-                    if (user) {
-                        done(null, false, { message: 'postoji' });
-                    } else {
-
-                        var newUser = new Professor();
-                        newUser.email = email;
-                        newUser.firstName = req.body.firstName;
-                        newUser.lastName = req.body.lastName;
-                        newUser.password = newUser.generateHash(password);
-
-                        newUser.save(function (err) {
-                            if (err) {
-                                console.error(err);
-                                return done(err, newUser);
-                            }
-                            return done(null, newUser);
-                        });
-                    }
-                });
-            });
-        }));
-
-    passport.use('local-createNewStudent', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
-        function (req, email, password, done) {
-            process.nextTick(function () {
-                Student.findOne({ 'email': email }, function (err, user) {
-                    if (err) {
-                        return done(err);
-                    }
-                    if (user) {
-                        done(null, false, { message: 'postoji' });
-                    } else {
-
-                        var newUser = new Student();
-                        newUser.email = email;
-                        newUser.firstName = req.body.firstName;
-                        newUser.lastName = req.body.lastName;
-                        newUser.password = newUser.generateHash(password);
-                        newUser.studentType = req.body.studentType;
-                        newUser.generation = req.body.generation;
-
-                        newUser.save(function (err) {
-                            if (err) {
-                                console.error(err);
-                                return done(err, newUser);
-                            }
-                            return done(null, newUser);
-                        });
-                    }
-                });
-            });
-        }));
-
     passport.use('local-login', new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
@@ -185,18 +84,27 @@ module.exports = function (passport) {
             var check = adminCheck.
                 then(function (user) {
                     if(user){
+                        if(user.isActive){
+                            Admin.update({_id:user._id}, {lastLoginDate: new Date()}).exec();
+                        }
                         lUser = user;
                     }
                 })
                 .chain(professorCheck)
                 .then(function (user) {
                     if(user){
+                        if(user.isActive) {
+                            Professor.update({_id: user._id}, {lastLoginDate: new Date()}).exec();
+                        }
                         lUser = user;
                     }
                 })
                 .chain(studentCheck)
                 .then(function (user) {
                     if(user){
+                        if(user.isActive) {
+                            Student.update({_id: user._id}, {lastLoginDate: new Date()}).exec();
+                        }
                         lUser = user;
                     }
                 })
@@ -205,6 +113,8 @@ module.exports = function (passport) {
                         return done(null, false, {message: 'User not found'});
                     } else if (!bcrypt.compareSync(password, lUser.password)) {
                         return done(null, false, {message: 'Wrong password'});
+                    } else if(!lUser.isActive){
+                        return done(null, false, {message: 'The user account has been deactivated'});
                     } else {
                         return done(null, lUser);
                     }

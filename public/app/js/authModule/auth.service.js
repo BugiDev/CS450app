@@ -7,7 +7,7 @@ require(['angular', 'authModule/auth.module'], function (angular, authModule) {
     authModule
         .service('authService', function ($http, config, $q, $location) {
 
-            this.authenticate = function(email, password){
+            this.authenticate = function (email, password) {
                 var deferred = $q.defer();
                 $http.post(config.apiBaseURL + config.authUrl, {email: email, password: password})
                     .success(function (data, status, headers, config) {
@@ -27,7 +27,7 @@ require(['angular', 'authModule/auth.module'], function (angular, authModule) {
                 return deferred.promise;
             };
 
-            this.logout = function(){
+            this.logout = function () {
                 var deferred = $q.defer();
                 $http.get(config.apiBaseURL + config.logoutUrl)
                     .success(function (data, status, headers, config) {

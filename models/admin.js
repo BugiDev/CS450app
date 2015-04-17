@@ -22,12 +22,18 @@ var adminSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    isActive:{
+        type: Boolean,
+        default: true,
+        require: true
+    },
     userType: {
         type: String,
         default: 'ADMIN'
     },
     lastLoginDate:{
-        type: Date
+        type: Date,
+        default: undefined
     },
     picture: String
 });

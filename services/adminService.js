@@ -1,22 +1,19 @@
 /**
  * Created by bogdanbegovic on 4/16/15.
  */
-/**
- * Created by bogdanbegovic on 4/13/15.
- */
 
-module.exports = function () {
-    'use strict';
+var Admin = require('../models/admin');
+var generatePassword = require('password-generator');
+var mailService = require('../services/mailService');
 
-    var Admin = require('../models/admin');
-    var generatePassword = require('password-generator');
-
-    this.updateAdmin = function(admin){
-        Admin.findOneAndUpdate({'_id': admin.id}, admin, {upsert:false}).lean().exec();
-    };
-
-    this.createAdmin = function(admin){
-        Admin.findOne({ 'email': admin.email }, function (err, user) {
+module.exports = {
+    updateAdmin: function (admin) {
+        'use strict';
+        Admin.findOneAndUpdate({'_id': admin.id}, admin, {upsert: false}).lean().exec();
+    },
+    createAdmin: function (admin) {
+        'use strict';
+        Admin.findOne({'email': admin.email}, function (err, user) {
             if (err) {
                 return err;
             }
@@ -24,31 +21,37 @@ module.exports = function () {
                 err = 'User already exists';
                 return err;
             }
-            if(!admin.email || !admin.firstName || !admin.lastName){
+            if (!admin.email || !admin.firstName || !admin.lastName) {
                 err = 'Validation error';
                 return err;
-            }else {
-
+            } else {
                 var newUser = new Admin();
                 var password = generatePassword(12, false, /\d/, 'met');
                 newUser.email = admin.email;
                 newUser.firstName = admin.firstName;
                 newUser.lastName = admin.lastName;
                 newUser.password = newUser.generateHash(password);
+                newUser.picture = admin.picture;
 
                 newUser.save(function (err) {
                     if (err) {
                         console.error(err);
                         return err;
+                    }else{
+                        mailService.sendEmail({email: admin.email, password: password, accountType: 'ADMIN'});
+                        console.log('Added new admin');
+                        console.dir(newUser);
+                        return newUser;
                     }
-                    return newUser;
                 });
             }
         });
-    };
-
-    this.getAllAdmins = function(){
-        Admin.find({}).lean().exec();
-    };
-
-};
+    },
+    getAllAdmins: function () {
+        'use strict';
+        return Admin.find({}).lean().exec();
+    },
+    deactivateAdmin: function (id) {
+        'use strict';
+        return Admin.findOneAndUpdate({'_id': id}, {isActive: false}, {upsert: false}).lean().exec();
+    }};

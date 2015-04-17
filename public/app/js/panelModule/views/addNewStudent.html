@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 ncy-breadcrumb ></h1>
+        <h1 ncy-breadcrumb></h1>
     </div>
 </div>
 
@@ -16,52 +16,126 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form role="form">
-                            <div class="row">
-                                <div class="col-lg-6">
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form role="form" name="newStudentForm"
+                                      ng-submit="newStudentForm.$valid && createNewStudent()" novalidate>
                                     <div class="form-group">
                                         <label>User Type</label>
-                                        <p class="form-control-static"><span class="form-static-usertype">STUDENT</span></p>
+
+                                        <p class="form-control-static"><span class="form-static-usertype">STUDENT</span>
+                                        </p>
                                     </div>
                                     <div class="form-group">
                                         <label>First Name</label>
-                                        <input class="form-control" placeholder="Input First Name (ex. Bogdan)">
+                                        <input class="form-control" placeholder="Input First Name (ex. Bogdan)"
+                                               name="firstName" ng-model="student.firstName" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="newStudentForm.firstName.$error"
+                                             ng-if="(newStudentForm.firstName.$touched || newStudentForm.$submitted) && !newStudentForm.firstName.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Last Name</label>
-                                        <input class="form-control" placeholder="Input Last Name (ex. Bogdan)">
+                                        <input class="form-control" placeholder="Input Last Name (ex. Begovic)"
+                                               name="lastName" ng-model="student.lastName" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="newStudentForm.lastName.$error"
+                                             ng-if="(newStudentForm.lastName.$touched || newStudentForm.$submitted) && !newStudentForm.lastName.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Email</label>
-                                        <input class="form-control" placeholder="Input Email (ex. bogdan@mail.com)">
+                                        <input class="form-control" placeholder="Input Email (ex. bogdan@mail.com)"
+                                               name="email" ng-model="student.email" class="form-control"
+                                               email-validator
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="newStudentForm.email.$error"
+                                             ng-if="(newStudentForm.email.$touched || newStudentForm.$submitted) && !newStudentForm.email.$valid">
+                                            <div ng-message="required">You have to input your email address</div>
+                                            <div ng-message="email">Email has to be valid (ex. peter@mail.com)</div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Student generation</label>
-                                        <input class="form-control" placeholder="Input Student generation (ex. 2014/2015)">
+                                        <input class="form-control"
+                                               placeholder="Input Student generation (ex. 2014/2015)" name="generation"
+                                               ng-model="student.generation" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="newStudentForm.generation.$error"
+                                             ng-if="(newStudentForm.generation.$touched || newStudentForm.$submitted) && !newStudentForm.generation.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Student index number</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               placeholder="Input Student index number(ex. 1041)" name="indexNum"
+                                               ng-model="student.indexNum" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="newStudentForm.indexNum.$error"
+                                             ng-if="(newStudentForm.indexNum.$touched || newStudentForm.$submitted) && !newStudentForm.indexNum.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                            <div ng-message="number">You have to input number</div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Student type</label>
-                                        <select class="form-control">
+                                        <select class="form-control" name="studentType" ng-model="student.studentType"
+                                                class="form-control"
+                                                ng-required="true">
                                             <option>Traditional</option>
                                             <option>Internet</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>File input</label>
-                                        <input type="file">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <button type="submit" class="btn btn-met">Submit</button>
-                                    <button type="reset" class="btn btn-default">Reset</button>
-                                </div>
-                            </div>
 
-                        </form>
+                                        <div class="error_messages" ng-messages="newStudentForm.studentType.$error"
+                                             ng-if="(newStudentForm.studentType.$touched || newStudentForm.$submitted) && !newStudentForm.studentType.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" id="submit" class="btn btn-met" value="Submit"> Submit
+                                    </button>
+                                    <button type="reset" class="btn btn-default" ng-click="resetForm()">Reset</button>
+
+                                </form>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group center-text">
+                                    <label>User picture</label>
+
+                                    <div ng-show="pictureStep<3" class="cropArea">
+                                        <image-crop
+                                                data-width="300"
+                                                data-height="300"
+                                                data-shape="square"
+                                                data-result="student.picture"
+                                                data-step="pictureStep"
+                                                ></image-crop>
+                                    </div>
+                                    <div ng-show="student.picture" class="image-crop-result">
+                                        <img ng-src="{{ student.picture }}" alt="The Cropped Image">
+                                    </div>
+
+                                    <div class="image-crop-buttons">
+                                        <button class="btn btn-default" ng-click="resetCrop()"
+                                                ng-show="pictureStep===3">
+                                            Reset
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
