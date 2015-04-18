@@ -11,12 +11,26 @@ define([
             logoutUrl: '/user/logout',
             isAuthenticatedUrl: '/user/isAuthenticated',
             getUserProfileUrl: '/user/getUserProfile',
-            setUserProfileUrl: '/user/setUserProfile',
-            editUserProfileUrl: '/user/editUserProfile',
-            createNewUserUrl: '/user/createNewUser',
-            deactivateUserUrl: '/user/deactivateUser',
-            getAllAdminsUrl: '/user/getAllAdmins',
-            getAllProfessorsUrl: '/user/getAllProfessors',
-            getAllStudentsUrl: '/user/getAllStudents'
+
+            getAdminByIdUrl: '/admin/getAdminByID/',
+            setAdminProfileUrl: '/admin/setAdminProfile',
+            editAdminProfileUrl: '/admin/editAdminProfile',
+            createNewAdminUrl: '/admin/createNewAdmin',
+            deactivateAdminUrl: '/admin/deactivateAdmin',
+            getAllAdminsUrl: '/admin/getAllAdmins',
+
+            getProfessorByIdUrl: '/professor/getProfessorByID/',
+            setProfessorProfileUrl: '/professor/setProfessorProfile',
+            editProfessorProfileUrl: '/professor/editProfessorProfile',
+            createNewProfessorUrl: '/professor/createNewProfessor',
+            deactivateProfessorUrl: '/professor/deactivateProfessor',
+            getAllProfessorsUrl: '/professor/getAllProfessors',
+
+            getStudentByIdUrl: '/student/getStudentByID/',
+            setStudentProfileUrl: '/student/setStudentProfile',
+            editStudentProfileUrl: '/student/editStudentProfile',
+            createNewStudentUrl: '/student/createNewStudent',
+            deactivateStudentUrl: '/student/deactivateStudent',
+            getAllStudentsUrl: '/student/getAllStudents'
         });
 });

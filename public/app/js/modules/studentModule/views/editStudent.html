@@ -1,0 +1,169 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 ncy-breadcrumb></h1>
+    </div>
+</div>
+
+
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Edit student {{student.firstName}} {{student.lastName}}
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="row">
+                            <div class="col-lg-6" ng-init="init()">
+                                <form role="form" name="editStudentForm"
+                                      ng-submit="editStudentForm.$valid && editStudent()" novalidate>
+                                    <div class="form-group">
+                                        <label>User Type</label>
+
+                                        <p class="form-control-static"><span class="form-static-usertype">STUDENT</span>
+                                        </p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input class="form-control" placeholder="Input First Name (ex. Bogdan)"
+                                               name="firstName" ng-model="student.firstName" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="editStudentForm.firstName.$error"
+                                             ng-if="(editStudentForm.firstName.$touched || editStudentForm.$submitted) && !editStudentForm.firstName.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input class="form-control" placeholder="Input Last Name (ex. Begovic)"
+                                               name="lastName" ng-model="student.lastName" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="editStudentForm.lastName.$error"
+                                             ng-if="(editStudentForm.lastName.$touched || editStudentForm.$submitted) && !editStudentForm.lastName.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input class="form-control" placeholder="Input Email (ex. bogdan@mail.com)"
+                                               name="email" ng-model="student.email" class="form-control"
+                                               email-validator
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="editStudentForm.email.$error"
+                                             ng-if="(editStudentForm.email.$touched || editStudentForm.$submitted) && !editStudentForm.email.$valid">
+                                            <div ng-message="required">You have to input your email address</div>
+                                            <div ng-message="email">Email has to be valid (ex. peter@mail.com)</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Student generation</label>
+                                        <input class="form-control"
+                                               placeholder="Input Student generation (ex. 2014/2015)" name="generation"
+                                               ng-model="student.generation" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="editStudentForm.generation.$error"
+                                             ng-if="(editStudentForm.generation.$touched || editStudentForm.$submitted) && !editStudentForm.generation.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Student index number</label>
+                                        <input class="form-control"
+                                               type="number"
+                                               placeholder="Input Student index number(ex. 1041)" name="indexNum"
+                                               ng-model="student.indexNum" class="form-control"
+                                               ng-required="true">
+
+                                        <div class="error_messages" ng-messages="editStudentForm.indexNum.$error"
+                                             ng-if="(editStudentForm.indexNum.$touched || editStudentForm.$submitted) && !editStudentForm.indexNum.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                            <div ng-message="number">You have to input number</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Student type</label>
+                                        <select class="form-control" name="studentType" ng-model="student.studentType"
+                                                class="form-control"
+                                                ng-required="true">
+                                            <option>Traditional</option>
+                                            <option>Internet</option>
+                                        </select>
+
+                                        <div class="error_messages" ng-messages="editStudentForm.studentType.$error"
+                                             ng-if="(editStudentForm.studentType.$touched || editStudentForm.$submitted) && !editStudentForm.studentType.$valid">
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" id="submit" class="btn btn-met" value="Submit"> Submit
+                                    </button>
+                                    <button type="reset" class="btn btn-default" ng-click="resetForm()">Reset</button>
+
+                                </form>
+                            </div>
+
+                            <div class="col-lg-6" ng-show="student.picture">
+                                <div class="form-group center-text">
+                                    <label>User picture</label>
+
+                                    <div class="image-crop-result">
+                                        <img ng-src="{{ student.picture }}" alt="The Cropped Image">
+                                    </div>
+
+                                    <div class="image-crop-buttons">
+                                        <button class="btn btn-default" ng-click="changePicture()">
+                                            Change user picture
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6" ng-hide="student.picture">
+                                <div class="form-group center-text">
+                                    <label>User picture</label>
+
+                                    <div ng-show="pictureStep<3" class="cropArea">
+                                        <image-crop
+                                                data-width="300"
+                                                data-height="300"
+                                                data-shape="square"
+                                                data-result="tmpPicture"
+                                                data-step="pictureStep"
+                                                ></image-crop>
+                                    </div>
+                                    <div ng-show="tmpPicture" class="image-crop-result">
+                                        <img ng-src="{{ tmpPicture }}" alt="The Cropped Image">
+                                    </div>
+
+                                    <div class="image-crop-buttons">
+                                        <button class="btn btn-default" ng-click="resetCrop()"
+                                                ng-show="pictureStep===3">
+                                            Reset
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+
+    </div>
+    <!-- /.col-lg-8 -->
+
+</div>
+<!-- /.row -->

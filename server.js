@@ -3,12 +3,13 @@ var app = express();
 var port = process.env.PORT || 8080;
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var permissionMiddleware = require('./util/permissionMiddleware');
 
+// DB ======================================================================
 var configDB = require('./config/database.js');
 var mongoose = require('mongoose');
 mongoose.connect(configDB.url + configDB.dbName);
@@ -22,9 +23,27 @@ db.once('open', function () {
     console.info('DB connection success!');
 });
 
+// LOGGING ======================================================================
+var winston = require('winston');
+var logConfig = require('./config/log.js');
+var transports = [];
+
+transports.push(new winston.transports.DailyRotateFile({
+    datePattern: '.yyyy-MM-dd',
+    filename: logConfig.logFilePath + logConfig.logFileName
+}));
+
+var logger = new winston.Logger({transports: transports});
+
+/*app.use(function (req, res, next) {
+    'use strict';
+    logger.log('info', 'Request on: ' + req.path);
+    logger.log('info', 'With req.body: ' + req.body);
+    next();
+});*/
+
 require('./config/passport')(passport);
 
-app.use(logger('dev'));
 app.use('/', express.static(path.join(__dirname, 'public/app')));
 app.use(cookieParser('bogdanbegovic'));
 app.use(bodyParser({limit: '50mb'}));
@@ -34,7 +53,10 @@ app.use(bodyParser.json({limit: '50mb'}));
 // required for passport
 app.use(session({
     secret: 'bogdanbegovic',
-    maxAge: new Date(Date.now() + 3600000),
+    cookie:{
+        secure: false,
+        maxAge: 60 * 60 * 1000
+    },
     rolling: true,
     resave: true,
     saveUninitialized: false
@@ -43,7 +65,10 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 // routes ======================================================================
-require('./routes/userMgmt.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/userMgmt.js')(app, passport, permissionMiddleware, logger); // load our routes and pass in our app and fully configured passport
+require('./routes/studentRoute.js')(app, permissionMiddleware, logger);
+require('./routes/professorRoute.js')(app, permissionMiddleware, logger);
+require('./routes/adminRoute.js')(app, permissionMiddleware, logger);
 
 // launch ======================================================================
 app.listen(port);

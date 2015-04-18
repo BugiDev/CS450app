@@ -12,6 +12,9 @@ require.config({
         'angular-touch': '../bower_components/angular-touch/angular-touch',
         'angular-breadcrumb': '../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min',
         'angular-image-crop': '../bower_components/angular-image-crop/image-crop',
+        'angular-modal-service': '../bower_components/angular-modal-service/dst/angular-modal-service.min',
+        'ngtoast': '../bower_components/ngtoast/dist/ngToast.min',
+        'angular-permission': '../bower_components/angular-permission/dist/angular-permission',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         'angular-ui-router': '../bower_components/angular-ui-router/release/angular-ui-router',
         'angular-localStorage': '../bower_components/angular-local-storage/dist/angular-local-storage',
@@ -31,8 +34,11 @@ require.config({
         'angular-messages': ['angular'],
         'angular-ui-router': ['angular'],
         'angular-localStorage': ['angular'],
-        'angular-breadcrumb':['angular'],
-        'angular-image-crop':['angular'],
+        'angular-breadcrumb': ['angular'],
+        'angular-image-crop': ['angular'],
+        'ngtoast': ['angular'],
+        'angular-modal-service': ['angular'],
+        'angular-permission': ['angular'],
         'angular-mocks': {
             deps: [
                 'angular'
@@ -49,9 +55,7 @@ require.config({
     priority: [
         'angular'
     ],
-    packages: [
-
-    ]
+    packages: []
 });
 
 //http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
@@ -70,6 +74,9 @@ require([
     'angular-localStorage',
     'angular-breadcrumb',
     'angular-image-crop',
+    'angular-modal-service',
+    'angular-permission',
+    'ngtoast',
     'bootstrap'
 ], function (angular, app, ngCookies, ngSanitize, ngResource, ngAnimate, ngTouch, ngMessages, uiRouter, localStorage) {
     'use strict';

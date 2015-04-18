@@ -4,10 +4,15 @@ define([
     'underscoreMixin',
     'angular-ui-router',
     'validators/validators',
-    'authModule/auth.module',
-    'panelModule/panel.module',
-    'userMgmtModule/userMgmt.module',
-    'constants/config'
+    'modules/authModule/auth.module',
+    'modules/panelModule/panel.module',
+    'modules/modalDialogModule/modal.module',
+    'modules/studentModule/student.module',
+    'modules/professorModule/professor.module',
+    'modules/adminModule/admin.module',
+    'modules/userMgmtModule/userMgmt.module',
+    'constants/config',
+    'constants/roles'
 
 ], function (angular, _)/*invoke*/ {
     'use strict';
@@ -26,11 +31,19 @@ define([
             'cs450app.auth',
             'cs450app.validators',
             'cs450app.config',
+            'cs450app.roles',
             'cs450app.userMgmt',
             'cs450app.panel',
+            'cs450app.modalModule',
+            'cs450app.student',
+            'cs450app.professor',
+            'cs450app.admin',
             'LocalStorageModule',
             'ncy-angular-breadcrumb',
             'ImageCropper',
+            'ngToast',
+            'angularModalService',
+            'permission',
 
             /*angJSDeps*/
             'ngCookies',
@@ -42,7 +55,7 @@ define([
             'ngTouch'
 
         ])
-        .config(function ($stateProvider, $urlRouterProvider, localStorageServiceProvider, $httpProvider) {
+        .config(function (localStorageServiceProvider, $httpProvider, $urlRouterProvider, $stateProvider) {
 
             //TODO promeniti za produkciju Prefix
             localStorageServiceProvider
@@ -58,14 +71,14 @@ define([
                     views: {
                         'master': {
                             controller: 'authCtrl',
-                            templateUrl: 'js/authModule/views/auth.html'
+                            templateUrl: 'js/modules/authModule/views/auth.html'
                         }
                     }
                 })
                 .state('panel', {
                     views: {
                         'master': {
-                            templateUrl: 'js/panelModule/views/panel.html'
+                            templateUrl: 'js/modules/panelModule/views/panel.html'
                         }
                     },
                     ncyBreadcrumb: {
@@ -75,14 +88,14 @@ define([
                     views: {
                         'sidebar-nav': {
                             controller: 'sidebarNavCtrl',
-                            templateUrl: 'js/panelModule/views/sidebarNav.html'
+                            templateUrl: 'js/modules/panelModule/views/sidebarNav.html'
                         },
                         'top-nav': {
                             controller: 'topNavCtrl',
-                            templateUrl: 'js/panelModule/views/topNav.html'
+                            templateUrl: 'js/modules/panelModule/views/topNav.html'
                         },
                         'content-holder': {
-                            templateUrl: 'js/panelModule/views/content.html'
+                            templateUrl: 'js/modules/panelModule/views/content.html'
                         }
                     },
                     ncyBreadcrumb: {
@@ -93,7 +106,13 @@ define([
                     views: {
                         'panel-content': {
                             controller: 'dashboardCtrl',
-                            templateUrl: 'js/panelModule/views/dashboard.html'
+                            templateUrl: 'js/modules/panelModule/views/dashboard.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['student', 'anonymous'],
+                            redirectTo: 'auth'
                         }
                     },
                     ncyBreadcrumb: {
@@ -104,123 +123,269 @@ define([
                     views: {
                         'panel-content': {
                             controller: 'myProfileCtrl',
-                            templateUrl: 'js/panelModule/views/myProfile.html'
+                            templateUrl: 'js/modules/panelModule/views/myProfile.html'
                         }
                     },
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
-                        label:'{{user.firstName}} {{user.lastName}}'
+                        label: '{{user.firstName}} {{user.lastName}}'
                     }
                 }).state('panel.content.addNewAdmin', {
                     url: '^/addNewAdmin',
                     views: {
                         'panel-content': {
                             controller: 'addNewAdminCtrl',
-                            templateUrl: 'js/panelModule/views/addNewAdmin.html'
+                            templateUrl: 'js/modules/adminModule/views/addNewAdmin.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
                         }
                     },
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
-                        label:'Add New Admin'
+                        label: 'Add New Admin'
                     }
                 }).state('panel.content.addNewProfessor', {
                     url: '^/addNewProfessor',
                     views: {
                         'panel-content': {
                             controller: 'addNewProfessorCtrl',
-                            templateUrl: 'js/panelModule/views/addNewProfessor.html'
+                            templateUrl: 'js/modules/professorModule/views/addNewProfessor.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
                         }
                     },
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
-                        label:'Add New Professor'
+                        label: 'Add New Professor'
                     }
                 }).state('panel.content.addNewStudent', {
                     url: '^/addNewStudent',
                     views: {
                         'panel-content': {
                             controller: 'addNewStudentCtrl',
-                            templateUrl: 'js/panelModule/views/addNewStudent.html'
+                            templateUrl: 'js/modules/studentModule/views/addNewStudent.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
                         }
                     },
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
-                        label:'Add New Student'
+                        label: 'Add New Student'
                     }
                 }).state('panel.content.allAdmins', {
                     url: '^/allAdmins',
                     views: {
                         'panel-content': {
                             controller: 'allAdminsCtrl',
-                            templateUrl: 'js/panelModule/views/allAdmins.html'
+                            templateUrl: 'js/modules/adminModule/views/allAdmins.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
                         }
                     },
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
-                        label:'All Admins'
+                        label: 'All Admins'
                     }
                 }).state('panel.content.allProfessors', {
                     url: '^/allProfessors',
                     views: {
                         'panel-content': {
                             controller: 'allProfessorsCtrl',
-                            templateUrl: 'js/panelModule/views/allProfessors.html'
+                            templateUrl: 'js/modules/professorModule/views/allProfessors.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
                         }
                     },
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
-                        label:'All Professors'
+                        label: 'All Professors'
                     }
                 }).state('panel.content.allStudents', {
                     url: '^/allStudents',
                     views: {
                         'panel-content': {
                             controller: 'allStudentsCtrl',
-                            templateUrl: 'js/panelModule/views/allStudents.html'
+                            templateUrl: 'js/modules/studentModule/views/allStudents.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['student', 'anonymous'],
+                            redirectTo: 'panel.content.dashboard'
                         }
                     },
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
-                        label:'All Students'
+                        label: 'All Students'
+                    }
+                }).state('panel.content.editAdmin', {
+                    url: '^/editAdmin/:id',
+                    views: {
+                        'panel-content': {
+                            controller: 'editAdminCtrl',
+                            templateUrl: 'js/modules/adminModule/views/editAdmin.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label: 'Edit Admin'
+                    }
+                }).state('panel.content.editProfessor', {
+                    url: '^/editProfessor/:id',
+                    views: {
+                        'panel-content': {
+                            controller: 'editProfessorCtrl',
+                            templateUrl: 'js/modules/professorModule/views/editProfessor.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label: 'Edit Professor'
+                    }
+                }).state('panel.content.editStudent', {
+                    url: '^/editStudent/:id',
+                    views: {
+                        'panel-content': {
+                            controller: 'editStudentCtrl',
+                            templateUrl: 'js/modules/studentModule/views/editStudent.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['admin'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label: 'Edit Student'
                     }
                 });
 
             $urlRouterProvider.otherwise('/login');
+
         })
-        .run(function ($rootScope, $location, userService) {
-            var routesThatDontRequireAuth = ['/login'];
+        .run(function ($rootScope, $location, userService, roles, Permission, $q) {
 
-            // check if current location matches route
-            var routeClean = function (route) {
-                return _.find(routesThatDontRequireAuth,
-                    function (noAuthRoute) {
-                        return _.startsWith(route, noAuthRoute);
-                    });
-            };
-
-            $rootScope.$on('$stateChangeStart', function (event, next, current) {
-                // if route requires auth and user is not logged in
-
-                userService.isAuthenticated().then(
-                    function(data){
-                        if(!data){
-                            $location.path('/login');
-                        }
-/*                        if (!routeClean($location.url())) {
-                            // redirect back to login
-                            $location.path('/login');
-                        }*/
-                    }, function(data){
-                        $location.path('/login');
+            Permission.defineRole('anonymous', function (stateParams) {
+                var deferred = $q.defer();
+                userService.isAuthenticated().then(function (data) {
+                    if(data){
+                        deferred.reject();
+                    }else{
+                        deferred.resolve();
                     }
-                );
+                }, function(err){
+                    deferred.reject();
+                });
+                return deferred.promise;
             });
-        }).factory('APIInterceptor', function($rootScope, $location, $q) {
+
+            Permission.defineRole('admin', function (stateParams) {
+                var deferred = $q.defer();
+                userService.isAuthenticated().then(function (data) {
+                    if(data &&  userService.user.userType === roles.admin){
+                        deferred.resolve();
+                    }else{
+                        deferred.reject();
+                    }
+                }, function(err){
+                    deferred.reject();
+                });
+                return deferred.promise;
+            });
+
+            Permission.defineRole('professor', function (stateParams) {
+                var deferred = $q.defer();
+                userService.isAuthenticated().then(function (data) {
+                    if(data && userService.user.userType === roles.professor){
+                        deferred.resolve();
+                    }else{
+                        deferred.reject();
+                    }
+                }, function(err){
+                    deferred.reject();
+                });
+                return deferred.promise;
+            });
+
+            Permission.defineRole('student', function (stateParams) {
+                var deferred = $q.defer();
+                userService.isAuthenticated().then(function (data) {
+                    if(data && userService.user.userType === roles.student){
+                        deferred.resolve();
+                    }else{
+                        deferred.reject();
+                    }
+                }, function(err){
+                    deferred.reject();
+                });
+                return deferred.promise;
+            });
+
+            /*            $rootScope.$on('$stateChangeStart', function (event, next, current) {
+             // if route requires auth and user is not logged in
+
+             userService.isAuthenticated().then(
+             function (data) {
+             console.log('Auth check');
+             console.debug(data);
+             if (!data) {
+             $location.path('/login');
+             }
+             */
+            /*                        if (!routeClean($location.url())) {
+             // redirect back to login
+             $location.path('/login');
+             }*/
+            /*
+             }, function (data) {
+             console.log('Auth check error');
+             console.debug(data);
+             $location.path('/login');
+             }
+             );
+             });*/
+        }).factory('APIInterceptor', function ($rootScope, $location, $q) {
             return {
-                response: function (response) { return response; },
-                responseError: function(response) {
+                response: function (response) {
+                    return response;
+                },
+                responseError: function (response) {
                     if (response.status === 401) {
-                        if($location.path() !== '/login'){
+                        if ($location.path() !== '/login') {
                             $location.path('/login');
                         }
                     }

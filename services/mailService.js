@@ -32,21 +32,19 @@ var mailOptions = function (receiver) {
     };
 };
 
-module.exports = {
+module.exports = function (logger) {
+    'use strict';
+    return {
+        sendEmail: function (receiver) {
+            smtpTransport.sendMail(mailOptions(receiver), function (error, response) {
+                if (error) {
+                    logger.error(error);
+                } else {
+                    logger.info('Mail success: ' + receiver.email);
+                }
+                smtpTransport.close();
+            });
+        }
 
-    sendEmail: function (receiver) {
-        'use strict';
-        smtpTransport.sendMail(mailOptions(receiver), function (error, response) {
-            if (error) {
-                console.log('mail error');
-                console.log(error);
-                console.trace(error);
-            } else {
-                console.log('mail success');
-                console.log(response);
-            }
-            smtpTransport.close();
-        });
-    }
-
+    };
 };
