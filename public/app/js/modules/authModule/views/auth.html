@@ -40,16 +40,9 @@
                                 </div>
                             </div>
 
-                            <div ng-show="!formNoUser">
-                                <div class="error_messages">
-                                    <div>There is no user with that email</div>
-                                </div>
-                                <br>
-                            </div>
-
                             <div ng-show="!formError">
                                 <div class="error_messages">
-                                    <div>There was an error while trying to authenticate. Please try again later.</div>
+                                    <div>{{errorMessage}}</div>
                                 </div>
                                 <br>
                             </div>

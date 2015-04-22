@@ -58,7 +58,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
                 return deferred.promise;
             };
 
-            this.edtAdminProfile = function (admin) {
+            this.editAdminProfile = function (admin) {
                 var deferred = $q.defer();
                 $http.post(config.apiBaseURL + config.editAdminProfileUrl, {user: admin})
                     .success(function (data, status, headers, config) {
@@ -100,7 +100,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
 
             this.deactivateAdmin = function (user) {
                 var deferred = $q.defer();
-                $http.post(config.apiBaseURL + config.deactivateAdminUrl, {id: user.id, userType: user.userType})
+                $http.post(config.apiBaseURL + config.deactivateAdminUrl, {id: user.id})
                     .success(function (data, status, headers, config) {
                         console.log('Deactivate admin Success!');
                         console.debug(data);

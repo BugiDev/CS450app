@@ -5,7 +5,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
     'use strict';
 
     adminModule
-        .controller('addNewAdminCtrl', function ($scope, adminsService, $rootScope) {
+        .controller('addNewAdminCtrl', function ($scope, adminsService, $rootScope, $state) {
             $scope.userType = 'ADMIN';
 
             $scope.admin = {
@@ -26,6 +26,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
                         console.log('New User success');
                         console.debug(data);
                         $rootScope.$broadcast('toast-success', { message: 'New admin: ' + data.firstName + ' ' + data.lastName + ' created'});
+                        $state.go('panel.content.allAdmins');
                     }, function(err){
                         console.log('New User error');
                         console.log(err);

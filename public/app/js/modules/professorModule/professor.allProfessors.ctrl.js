@@ -24,7 +24,7 @@ require(['modules/professorModule/professor.module'], function (professorModule)
             };
 
             $scope.deactivateProfessor = function (id) {
-                professorsService.deactivateProfessor({id: id, userType: 'PROFESSOR'}).then(
+                professorsService.deactivateProfessor({id: id}).then(
                     function (data) {
                         var professor = _.find($scope.professors, function (professor) {
                             return professor._id === id;

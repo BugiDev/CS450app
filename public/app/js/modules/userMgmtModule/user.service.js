@@ -55,18 +55,22 @@ require(['modules/userMgmtModule/userMgmt.module'], function (userMgmtModule) {
 
             this.getUserProfile = function () {
                 var deferred = $q.defer();
-                $http.get(config.apiBaseURL + config.getUserProfileUrl)
-                    .success(function (data, status, headers, config) {
-                        console.log('User profile Success!');
-                        console.debug(data);
-                        self.user = data;
-                        deferred.resolve();
-                    }).
-                    error(function (data, status, headers, config) {
-                        console.log('User profile Error!');
-                        console.debug(data);
-                        deferred.reject(data);
-                    });
+                if(self.user){
+                    deferred.resolve(self.user);
+                }else{
+                    $http.get(config.apiBaseURL + config.getUserProfileUrl)
+                        .success(function (data, status, headers, config) {
+                            console.log('User profile Success!');
+                            console.debug(data);
+                            self.user = data;
+                            deferred.resolve();
+                        }).
+                        error(function (data, status, headers, config) {
+                            console.log('User profile Error!');
+                            console.debug(data);
+                            deferred.reject(data);
+                        });
+                }
                 return deferred.promise;
             };
 

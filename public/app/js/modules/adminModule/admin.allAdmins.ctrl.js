@@ -5,7 +5,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
     'use strict';
 
     adminModule
-        .controller('allAdminsCtrl', function ($scope, adminsService, userService, $rootScope, ModalService, $location) {
+        .controller('allAdminsCtrl', function ($scope, adminsService, userService, $rootScope, ModalService, $location, $state) {
 
             $scope.admins = {};
 
@@ -24,7 +24,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
             };
 
             $scope.deactivateAdmin = function (id) {
-                adminsService.deactivateAdmin({id: id, userType: 'ADMIN'}).then(
+                adminsService.deactivateAdmin({id: id}).then(
                     function (data) {
                         var admin = _.find($scope.admins, function (admin) {
                             return admin._id === id;
@@ -40,7 +40,11 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
 
             $scope.isCurrentUser = function(id){
                 return id === userService.user._id;
-            }
+            };
+
+            $scope.editMyProfile = function(){
+                $state.go('panel.content.editProfile');
+            };
 
             $scope.showModalDialog = function(id) {
                 var adm = _.find($scope.admins, function (admin) {

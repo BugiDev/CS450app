@@ -31,5 +31,21 @@ define([
                     };
                 }
             };
+        })
+        .directive('passwordRepeatValidator', function () {
+            return {
+                restrict:'AE',
+                require:'ngModel',
+                link:function($scope,elem,attrs,ngModel){
+                    ngModel.$validators.passwordRepeat=function(modelValue,viewValue){
+                        var value=modelValue || viewValue;
+                        if($scope.password === value){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    };
+                }
+            };
         });
 });

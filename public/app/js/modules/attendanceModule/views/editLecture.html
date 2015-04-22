@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 ncy-breadcrumb></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Edit Lecture
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <form role="form" name="editLectureForm" ng-submit="editLecture()" novalidate>
+                        <table class="table table-hover" ng-init="init()">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Index number</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Generation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="student in students" ng-click="toggleCustom(student)" ng-class="{'selected-row': student.isChecked}">
+                                <td>
+                                    <label>
+                                        <input type="checkbox" ng-model="student.isChecked" ng-click="toggleCustom(student)">
+                                    </label>
+                                </td>
+                                <td>{{student.indexNum}}</td>
+                                <td>{{student.firstName}}</td>
+                                <td>{{student.lastName}}</td>
+                                <td>{{student.email}}</td>
+                                <td>{{student.generation}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div ng-hide="students.length > 0">There are no traditional students available</div>
+
+                        <button type="submit" id="submit" class="btn btn-met" value="Submit"> Submit
+                        </button>
+                        <button type="reset" class="btn btn-default" ng-click="resetForm()">Reset</button>
+
+                    </form>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>

@@ -3,14 +3,18 @@
  */
 
 var LocalStrategy = require('passport-local').Strategy;
-var Admin = require('../models/admin');
-var Professor = require('../models/professor');
-var Student = require('../models/student');
+var logger = require('../util/logger');
 var bcrypt = require('bcrypt-nodejs');
+var Q = require('q');
+var _ = require('underscore');
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
     'use strict';
+
+    var Admin = require('../models/admin');
+    var Professor = require('../models/professor');
+    var Student = require('../models/student');
 
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
@@ -18,47 +22,33 @@ module.exports = function (passport) {
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function (user, done) {
-        var dUser = null;
+    passport.deserializeUser(function (id, done) {
+        var tasks = [];
 
-        var adminCheck = Admin.findById(user)
-            .lean()
-            .exec();
+        tasks.push(Admin.findById(id).exec());
+        tasks.push(Professor.findById(id).exec());
+        tasks.push(Student.findById(id).exec());
 
-        var professorCheck = Professor.findById(user)
-            .lean()
-            .exec();
-
-        var studentCheck = Student.findById(user)
-            .lean()
-            .exec();
-
-        var check = adminCheck.
-            then(function (user) {
-                if(user){
-                    dUser = user;
-                }
-            })
-            .chain(professorCheck)
-            .then(function (user) {
-                if(user){
-                    dUser = user;
-                }
-            })
-            .chain(studentCheck)
-            .then(function (user) {
-                if(user){
-                    dUser = user;
-                }
-            })
-            .onResolve(function () {
-
-                done(null, dUser);
-            })
-            .onReject(function (err) {
-                console.error(err);
-                done(err, dUser);
-            });
+        Q.all(tasks)
+            .then(function (results) {
+                return _.reduce(results, function (memo, res) {
+                    if (res) {
+                        memo = res;
+                    }
+                    return memo;
+                }, undefined);
+            },
+            function (err) {
+                return done(err);
+            }
+        ).then(
+            function (data) {
+                done(null, data);
+            },
+            function (err) {
+                done(err, null);
+            }
+        );
     });
 
     passport.use('local-login', new LocalStrategy({
@@ -67,62 +57,52 @@ module.exports = function (passport) {
             passReqToCallback: true
         },
         function (req, email, password, done) {
-            var lUser;
+            var tasks = [];
 
-            var adminCheck = Admin.findOne({ 'email': email })
-                .lean()
-                .exec();
+            tasks.push(Admin.findOne({'email': email}).exec());
+            tasks.push(Professor.findOne({'email': email}).exec());
+            tasks.push(Student.findOne({'email': email}).exec());
 
-            var professorCheck = Professor.findOne({ 'email': email })
-                .lean()
-                .exec();
-
-            var studentCheck = Student.findOne({ 'email': email })
-                .lean()
-                .exec();
-
-            var check = adminCheck.
-                then(function (user) {
-                    if(user){
-                        if(user.isActive){
-                            Admin.update({_id:user._id}, {lastLoginDate: new Date()}).exec();
+            Q.all(tasks)
+                .then(function (results) {
+                    return _.reduce(results, function (memo, res) {
+                        if (res) {
+                            memo = res;
                         }
-                        lUser = user;
-                    }
-                })
-                .chain(professorCheck)
-                .then(function (user) {
-                    if(user){
-                        if(user.isActive) {
-                            Professor.update({_id: user._id}, {lastLoginDate: new Date()}).exec();
-                        }
-                        lUser = user;
-                    }
-                })
-                .chain(studentCheck)
-                .then(function (user) {
-                    if(user){
-                        if(user.isActive) {
-                            Student.update({_id: user._id}, {lastLoginDate: new Date()}).exec();
-                        }
-                        lUser = user;
-                    }
-                })
-                .onResolve(function () {
-                    if (!lUser) {
-                        return done(null, false, {message: 'User not found'});
-                    } else if (!bcrypt.compareSync(password, lUser.password)) {
-                        return done(null, false, {message: 'Wrong password'});
-                    } else if(!lUser.isActive){
-                        return done(null, false, {message: 'The user account has been deactivated'});
-                    } else {
-                        return done(null, lUser);
-                    }
-                })
-                .onReject(function (err) {
-                    console.error(err);
+                        return memo;
+                    }, undefined);
+                },
+                function (err) {
                     return done(err);
+                }
+            ).then(
+                function(data){
+                    var deferred = Q.defer();
+                    if (!data) {
+                        return done(null, false, 'There is no user with provided email');
+                    } else if (!bcrypt.compareSync(password, data.password)) {
+                        return done(null, false, 'Provided password is incorrect');
+                    } else if (!data.isActive) {
+                        return done(null, false, 'The user account has been deactivated');
+                    } else {
+                        data.logTime().then(
+                            function(){
+                                deferred.resolve(data);
+                            },
+                            function(err){
+                                deferred.reject(err);
+                            }
+                        );
+                        return deferred.promise;
+                    }
+                },
+                function (err) {
+                    return done(err);
+                }
+            ).then(function(data){
+                    return done(null, data);
                 });
-        }));
+        }
+    ));
 
 };

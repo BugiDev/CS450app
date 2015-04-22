@@ -5,7 +5,7 @@ require(['modules/professorModule/professor.module'], function (professorModule)
     'use strict';
 
     professorModule
-        .controller('addNewProfessorCtrl', function ($scope, professorsService, $rootScope) {
+        .controller('addNewProfessorCtrl', function ($scope, professorsService, $rootScope, $state) {
 
             $scope.professor = {
                 picture: null,
@@ -25,6 +25,7 @@ require(['modules/professorModule/professor.module'], function (professorModule)
                         console.log('New User success');
                         console.debug(data);
                         $rootScope.$broadcast('toast-success', { message: 'New professor: ' + data.firstName + ' ' + data.lastName + ' created'});
+                        $state.go('panel.content.allProfessors');
                     }, function(err){
                         console.log('New User error');
                         console.log(err);

@@ -5,7 +5,7 @@ require(['modules/studentModule/student.module'], function (studentModule) {
     'use strict';
 
     studentModule
-        .controller('addNewStudentCtrl', function ($scope, studentsService, $rootScope) {
+        .controller('addNewStudentCtrl', function ($scope, studentsService, $rootScope, $state) {
             $scope.student = {
                 picture: null,
                 userType: 'STUDENT'
@@ -24,6 +24,7 @@ require(['modules/studentModule/student.module'], function (studentModule) {
                         console.log('New User success');
                         console.debug(data);
                         $rootScope.$broadcast('toast-success', { message: 'New student: ' + data.firstName + ' ' + data.lastName + ' created'});
+                        $state.go('panel.content.allStudents');
                     }, function(err){
                         console.log('New User error');
                         console.log(err);

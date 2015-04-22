@@ -28,6 +28,7 @@ module.exports = {
     },
     adminAndProfessorApproved: function (req, res, next) {
         'use strict';
+        console.log(req.user);
         if (req.isAuthenticated() && (req.user.userType === 'ADMIN' || req.user.userType === 'PROFESSOR')) {
             return next();
         } else {

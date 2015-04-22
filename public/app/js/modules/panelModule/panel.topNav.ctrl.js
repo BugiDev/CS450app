@@ -7,7 +7,16 @@ require(['modules/panelModule/panel.module'], function (dashboardModule) {
     dashboardModule
         .controller('topNavCtrl', function ($scope, userService, ngToast) {
 
+            $scope.user = {};
+
             $scope.init = function () {
+
+                userService.getUserProfile().then(function(data){
+                    $scope.user = data;
+                }, function(err){
+                    $scope.user = {};
+                });
+
                 $(window).bind('load resize', function () {
                     var topOffset = 50;
                     var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;

@@ -36,7 +36,7 @@ require(['modules/professorModule/professor.module'], function (professorModule)
                     $scope.professor.picture = $scope.tmpPicture;
                 }
 
-                professorsService.editProfessor($scope.professor).then(
+                professorsService.editProfessorProfile($scope.professor).then(
                     function(data){
                         console.log('Edit Professor success');
                         console.debug(data);

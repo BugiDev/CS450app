@@ -37,6 +37,36 @@ require(['modules/studentModule/student.module'], function (studentModule) {
                 return deferred.promise;
             };
 
+            this.getAllTraditionalStudents = function(){
+                var deferred = $q.defer();
+                $http.get(config.apiBaseURL + config.getAllTraditionalStudentsUrl)
+                    .success(function (data, status, headers, config) {
+                        console.log('All Traditional Students Success!');
+                        console.debug(data);
+                        deferred.resolve(data);
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log('All Traditional Students Error!');
+                        deferred.reject(data);
+                    });
+                return deferred.promise;
+            };
+
+            this.getAllActiveStudents = function(){
+                var deferred = $q.defer();
+                $http.get(config.apiBaseURL + config.getAllActiveStudentsUrl)
+                    .success(function (data, status, headers, config) {
+                        console.log('All Active Students Success!');
+                        console.debug(data);
+                        deferred.resolve(data);
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log('All Active Students Error!');
+                        deferred.reject(data);
+                    });
+                return deferred.promise;
+            };
+
             this.setStudentProfile = function (student) {
                 var deferred = $q.defer();
                 $http.post(config.apiBaseURL + config.setStudentProfileUrl, {user: student})
@@ -99,7 +129,7 @@ require(['modules/studentModule/student.module'], function (studentModule) {
 
             this.deactivateStudent = function (user) {
                 var deferred = $q.defer();
-                $http.post(config.apiBaseURL + config.deactivateStudentUrl, {id: user.id, userType: user.userType})
+                $http.post(config.apiBaseURL + config.deactivateStudentUrl, {id: user.id})
                     .success(function (data, status, headers, config) {
                         console.log('Deactivate Student Success!');
                         console.debug(data);

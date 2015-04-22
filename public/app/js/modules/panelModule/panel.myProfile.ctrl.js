@@ -5,7 +5,19 @@ require(['modules/panelModule/panel.module'], function (panelModule) {
     'use strict';
 
     panelModule
-        .controller('myProfileCtrl', function ($scope, userService) {
-            $scope.user = userService.user;
+        .controller('myProfileCtrl', function ($scope, userService, $state) {
+
+            $scope.user = {};
+
+            userService.getUserProfile().then(function(data){
+                $scope.user = data;
+            }, function(err){
+                $scope.user = {};
+            });
+
+            $scope.editUser = function(){
+                $state.go('panel.content.editProfile')
+            };
+
         });
 });

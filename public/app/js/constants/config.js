@@ -31,6 +31,16 @@ define([
             editStudentProfileUrl: '/student/editStudentProfile',
             createNewStudentUrl: '/student/createNewStudent',
             deactivateStudentUrl: '/student/deactivateStudent',
-            getAllStudentsUrl: '/student/getAllStudents'
+            getAllStudentsUrl: '/student/getAllStudents',
+            getAllTraditionalStudentsUrl: '/student/getAllTraditionalStudents',
+            getAllActiveStudentsUrl: '/student/getAllActiveStudents',
+
+            getAllAttendanceUrl: '/attendance/getAllAttendance',
+            getAllLecturesUrl: '/attendance/lectures/getAllLectureAttendance',
+            getAllLabsUrl: '/attendance/labs/getAllLabsAttendance',
+            getLectureByIdUrl: '/attendance/lectures/getLectureByID/',
+            getLabByIdUrl: '/attendance/labs/getLabsByID/',
+            updateLectureUrl: '/attendance/lectures/updateLecture',
+            updateLabUrl: '/attendance/labs/updateLabs'
         });
 });

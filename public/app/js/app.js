@@ -10,6 +10,7 @@ define([
     'modules/studentModule/student.module',
     'modules/professorModule/professor.module',
     'modules/adminModule/admin.module',
+    'modules/attendanceModule/attendance.module',
     'modules/userMgmtModule/userMgmt.module',
     'constants/config',
     'constants/roles'
@@ -38,6 +39,7 @@ define([
             'cs450app.student',
             'cs450app.professor',
             'cs450app.admin',
+            'cs450app.attendance',
             'LocalStorageModule',
             'ncy-angular-breadcrumb',
             'ImageCropper',
@@ -124,6 +126,12 @@ define([
                         'panel-content': {
                             controller: 'myProfileCtrl',
                             templateUrl: 'js/modules/panelModule/views/myProfile.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['anonymous'],
+                            redirectTo: 'panel.content.dashboard'
                         }
                     },
                     ncyBreadcrumb: {
@@ -291,6 +299,96 @@ define([
                     ncyBreadcrumb: {
                         parent: 'panel.content.dashboard',
                         label: 'Edit Student'
+                    }
+                }).state('panel.content.editProfile', {
+                    url: '^/editProfile',
+                    views: {
+                        'panel-content': {
+                            controller: 'editProfileCtrl',
+                            templateUrl: 'js/modules/panelModule/views/editProfile.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['anonymous'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.myProfile',
+                        label: 'Edit Profile'
+                    }
+                }).state('panel.content.allLectures', {
+                    url: '^/allLectures',
+                    views: {
+                        'panel-content': {
+                            controller: 'allLecturesCtrl',
+                            templateUrl: 'js/modules/attendanceModule/views/allLectures.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['student', 'anonymous'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label: 'All Lectures'
+                    }
+                }).state('panel.content.editLecture', {
+                    url: '^/editLecture/:id',
+                    views: {
+                        'panel-content': {
+                            controller: 'editLectureCtrl',
+                            templateUrl: 'js/modules/attendanceModule/views/editLecture.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['student', 'anonymous'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.allLectures',
+                        label: 'Edit Lecture'
+                    }
+                }).state('panel.content.allLabs', {
+                    url: '^/allLabs',
+                    views: {
+                        'panel-content': {
+                            controller: 'allLabsCtrl',
+                            templateUrl: 'js/modules/attendanceModule/views/allLabs.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['student', 'anonymous'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label: 'All Labs'
+                    }
+                }).state('panel.content.editLab', {
+                    url: '^/editLab/:id',
+                    views: {
+                        'panel-content': {
+                            controller: 'editLabCtrl',
+                            templateUrl: 'js/modules/attendanceModule/views/editLab.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['student', 'anonymous'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.allLabs',
+                        label: 'Edit Lab'
                     }
                 });
 

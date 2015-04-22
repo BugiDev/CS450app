@@ -134,3 +134,7 @@ html, body{
     background-color: #a70532;
     color: #fff;
 }
+
+.selected-row{
+    background-color: #F3EDEF;
+}

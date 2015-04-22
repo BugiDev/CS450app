@@ -2,7 +2,9 @@
  * Created by bogdanbegovic on 4/13/15.
  */
 
-module.exports = function (app, passport, permissionMiddleware, logger) {
+var logger = require('../util/logger');
+
+module.exports = function (app, passport, permissionMiddleware) {
     'use strict';
 
     app.get('/user/logout', permissionMiddleware.isLoggedIn, function (req, res) {

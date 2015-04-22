@@ -33,7 +33,8 @@
                             <td>{{admin.email}}</td>
                             <td><span class="fa fa-check color-green" ng-show="admin.isActive"></span><span class="fa fa-times color-met" ng-show="!admin.isActive"></span></td>
                             <td>{{admin.lastLoginDate | date:"dd/MM/yyyy 'at' h:mma"}}
-                            <td><button class="btn btn-default" ng-click="editAdmin(admin._id)"><span class="fa fa-pencil"></span></button></td>
+                            <td ng-if="isCurrentUser(admin._id)"><button class="btn btn-default" ng-click="editMyProfile()"><span class="fa fa-pencil"></span></button></td>
+                            <td ng-if="!isCurrentUser(admin._id)"><button class="btn btn-default" ng-click="editAdmin(admin._id)"><span class="fa fa-pencil"></span></button></td>
                             <td><button class="btn btn-met" ng-click="showModalDialog(admin._id)" ng-hide="isCurrentUser(admin._id)"><span class="fa fa-times-circle"></span></button></span></td>
                         </tr>
                         </tbody>

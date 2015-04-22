@@ -98,7 +98,7 @@ require(['modules/professorModule/professor.module'], function (professorModule)
 
             this.deactivateProfessor = function (user) {
                 var deferred = $q.defer();
-                $http.post(config.apiBaseURL + config.deactivateProfessorUrl, {id: user.id, userType: user.userType})
+                $http.post(config.apiBaseURL + config.deactivateProfessorUrl, {id: user.id})
                     .success(function (data, status, headers, config) {
                         console.log('Deactivate professor Success!');
                         console.debug(data);

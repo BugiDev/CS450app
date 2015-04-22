@@ -21,13 +21,13 @@
                     <li>
                         <a ui-sref="panel.content.allStudents">All Students</a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ui-sref-active="active" ng-hide="user.userType !== 'ADMIN'">
                         <a ui-sref="panel.content.addNewStudent">Add New Student</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            <li>
+            <li ng-hide="user.userType !== 'ADMIN'">
                 <a href="#"><i class="fa fa-university fa-fw"></i> Professors<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -39,7 +39,7 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            <li>
+            <li ng-hide="user.userType !== 'ADMIN'">
                 <a href="#"><i class="fa fa-user-md fa-fw"></i>Admins<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -55,10 +55,10 @@
                 <a href="#"><i class="fa fa-eye fa-fw"></i> Attendance<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="flot.html">Lectures</a>
+                        <a ui-sref="panel.content.allLectures">Lectures</a>
                     </li>
                     <li>
-                        <a href="morris.html">Labs</a>
+                        <a ui-sref="panel.content.allLabs">Labs</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

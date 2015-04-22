@@ -2,318 +2,161 @@
  * Created by bogdanbegovic on 4/13/15.
  */
 
-module.exports = function (app, passport) {
+var logger = require('../util/logger');
+var Student = require('../models/student');
+var mailService = require('../services/mailService');
+
+module.exports = function (app, permissionMiddleware) {
     'use strict';
 
-    var adminService = require('../services/adminService');
-    var professorService = require('../services/professorService');
-    var studentService = require('../services/studentService');
-
-    var bcrypt = require('bcrypt-nodejs');
-
-    // route middleware to make sure a user is logged in
-    function isLoggedIn(req, res, next) {
-        // if user is authenticated in the session, carry on
-        if (req.isAuthenticated()) {
-            return next();
+    app.get('/student/getStudentByID/:id', permissionMiddleware.adminApproved, function (req, res) {
+        var id = req.params.id;
+        if (!id) {
+            logger.error('ID not provided for student');
+            res.status(404);
+            res.json('ID not provided for student');
         } else {
-            res.statusCode = 401;
-            res.json({poruka: 'ne moze'});
+            Student.findById(id).then(
+                function (data) {
+                    if (!data) {
+                        logger.error('Student not found');
+                        res.status(404);
+                        res.json('Student not found');
+                    } else {
+                        logger.info('Found student: ' + data._id);
+                        res.json(data);
+                    }
+                }, function (err) {
+                    logger.error(err);
+                    res.status(404);
+                    res.json(err);
+                }
+            );
         }
-    }
-
-    function adminApproved(req, res, next) {
-        if (req.isAuthenticated() && req.user.userType === 'ADMIN') {
-            return next();
-        } else {
-            res.statusCode = 401;
-            res.json({poruka: 'ne moze'});
-        }
-    }
-
-    function adminAndProfessorApproved(req, res, next) {
-        if (req.isAuthenticated() && (req.user.userType === 'ADMIN' || req.user.userType === 'PROFESSOR')) {
-            return next();
-        } else {
-            res.statusCode = 401;
-            res.json({poruka: 'ne moze'});
-        }
-    }
-
-    app.get('/user/logout', isLoggedIn, function (req, res) {
-        req.logout();
-        res.json(true);
     });
 
-    app.post('/user/auth', function (req, res, next) {
-        passport.authenticate('local-login', function (err, user, info) {
-            if (err) {
-                res.statusCode = 500;
-                return next(err);
+    app.post('/student/setStudentProfile', permissionMiddleware.isLoggedIn, function (req, res) {
+        if (!req.body.user) {
+            logger.error('You have to provide data for updating you profile!');
+            res.status(404);
+            res.json('You have to provide data for updating you profile!');
+        } else if (req.body.user._id !== req.user.id) {
+            logger.error('You can only change you profile!');
+            res.status(404);
+            res.json('You can only change you profile!');
+        } else {
+            var password = req.body.user.password;
+            if(password !== req.user.password){
+                req.body.user.password = req.user.generateHash(password);
             }
-            if (!user) {
-                res.statusCode = 404;
-                return res.json(info);
-
-            } else {
-                req.logIn(user, function (err) {
-                    if (err) {
-                        return next(err);
+            Student.updateStudent(req.body.user).then(
+                function (data) {
+                    logger.info('Set new student: ' + data._id);
+                    if(password !== req.user.password){
+                        mailService.changePasswordMail({
+                            email: req.body.user.email,
+                            password: password,
+                            accountType: 'STUDENT'
+                        });
                     }
-                    return res.json(user);
+                    res.json(data);
+                }, function (err) {
+                    logger.error('You have to provide data for updating you profile!');
+                    res.json(err);
                 });
-            }
-        })(req, res, next);
+        }
     });
 
-    app.get('/user/isAuthenticated', isLoggedIn, function (req, res) {
-        res.json(true);
-    });
-
-    app.get('/user/getUserProfile', isLoggedIn, function (req, res) {
-        res.json(req.user);
-    });
-
-    app.get('/user/getAdminByID/:id', adminApproved, function (req, res) {
-        var id = req.param('id');
-        if(!id){
+    app.post('/student/editStudentProfile', permissionMiddleware.adminApproved, function (req, res) {
+        if (!req.body.user) {
+            logger.error('You have to provide data for updating student profile!');
             res.status(404);
-            res.json({message: 'ID not provided for user'});
-        }else{
-            adminService.getAdminByID(id).then(
-                function(data){
-                    if(!data){
-                        res.status(404);
-                        res.json({message:'User not found'});
-                    }else{
-                        res.json(data);
-                    }
-                }, function(err){
-                    res.status(404);
+            res.json('You have to provide data for updating student profile!');
+        } else {
+            Student.updateStudent(req.body.user).then(
+                function (data) {
+                    logger.info('Edit student: ' + data._id);
+                    res.json(data);
+                }, function (err) {
+                    logger.error('You have to provide data for updating you profile!');
+                    res.json(err);
+                });
+        }
+    });
+
+    app.post('/student/createNewStudent', permissionMiddleware.adminApproved, function (req, res, next) {
+        if (!req.body.user) {
+            logger.error('You have to provide student data for new student!');
+            res.status(404);
+            res.json('You have to provide student data for new student!');
+        } else {
+            Student.createStudent(req.body.user).then(
+                function (data) {
+                    logger.info('Add student success');
+                    logger.info(data._id);
+                    res.json(data);
+                },
+                function (err) {
+                    logger.error('Add student FAIL');
+                    logger.error(err);
                     res.json(err);
                 }
             );
         }
     });
 
-    app.get('/user/getProfessorByID/:id', adminApproved, function (req, res) {
-        var id = req.param('id');
-        if(!id){
+    app.post('/student/deactivateStudent', permissionMiddleware.adminApproved, function (req, res, next) {
+        if (!req.body.id) {
+            logger.error('You have to provide id for deactivating a student!');
             res.status(404);
-            res.json({message: 'ID not provided for user'});
-        }else{
-            professorService.getProfessorByID(id).then(
-                function(data){
-                    if(!data){
-                        res.status(404);
-                        res.json({message:'User not found'});
-                    }else{
-                        res.json(data);
-                    }
-                }, function(err){
-                    res.status(404);
-                    res.json(err);
-                }
-            );
-        }
-    });
-
-    app.get('/user/getStudentByID/:id', adminAndProfessorApproved, function (req, res) {
-        var id = req.param('id');
-        if(!id){
-            res.status(404);
-            res.json({message: 'ID not provided for user'});
-        }else{
-            studentService.getStudentByID(id).then(
-                function(data){
-                    if(!data){
-                        res.status(404);
-                        res.json({message:'User not found'});
-                    }else if(data.isActive){
-
-                    } else{
-                        res.json(data);
-                    }
-                }, function(err){
-                    res.status(404);
-                    res.json(err);
-                }
-            );
-        }
-    });
-
-    app.post('/user/setUserProfile', isLoggedIn, function (req, res) {
-
-        if (!req.body.user) {
-            res.status = 404;
-            res.json({message: 'You have to provide data for updating you profile!'});
-        }else if (req.body.user._id !== req.user._id) {
-            res.status = 404;
-            res.json({message: 'You can only change you profile!'});
-        } else if (!req.body.user.userType) {
-            res.status = 404;
-            res.json({message: 'You have to provide userType for updating you profile!'});
-        } else if (req.body.user.userType === 'ADMIN') {
-            adminService.updateAdmin(req.body.user).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else if (req.body.user.userType === 'PROFESSOR') {
-            professorService.updateProfessor(req.body.user).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else if (req.body.user.userType === 'STUDENT') {
-            studentService.updateStudent(req.body.user).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else {
-            res.status = 404;
-            res.json({message: 'You have provided wrong userType for updating you profile!'});
-        }
-
-    });
-
-    app.post('/user/editUserProfile', adminApproved, function (req, res) {
-
-        if (!req.body.user) {
-            res.status = 404;
-            res.json({message: 'You have to provide data for updating user profile!'});
-        } else if (!req.body.user.userType) {
-            res.status = 404;
-            res.json({message: 'You have to provide userType for updating user profile!'});
-        } else if (req.body.user.userType === 'ADMIN') {
-            adminService.updateAdmin(req.body.user).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else if (req.body.user.userType === 'PROFESSOR') {
-            professorService.updateProfessor(req.body.user).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else if (req.body.user.userType === 'STUDENT') {
-            studentService.updateStudent(req.body.user).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else {
-            res.status = 404;
-            res.json({message: 'You have provided wrong userType for updating user profile!'});
-        }
-
-    });
-
-    app.post('/user/createNewUser', adminApproved, function (req, res, next) {
-        if (!req.body.user) {
-            res.status = 404;
-            res.json({message: 'You have to provide user data for new user!'});
-        } else if (!req.body.user.userType) {
-            res.status = 404;
-            res.json({message: 'You have to provide userType for new user!'});
-        } else if (req.body.user.userType === 'ADMIN') {
-            res.json(adminService.createAdmin(req.body.user));
-        } else if (req.body.user.userType === 'PROFESSOR') {
-            res.json(professorService.createProfessor(req.body.user));
-        } else if (req.body.user.userType === 'STUDENT') {
-            res.json(studentService.createStudent(req.body.user));
-        } else {
-            res.status = 404;
-            res.json({message: 'You have provided wrong userType for new user!'});
-        }
-    });
-
-    app.post('/user/deactivateUser', adminApproved, function (req, res, next) {
-        console.dir(req.body);
-        if(!req.body.id){
-            res.status = 404;
-            res.json({message: 'You have to provide id for deactivating a user!'});
-        }else if (!req.body.userType) {
-            res.status = 404;
-            res.json({message: 'You have to provide userType for deactivating a user!'});
+            res.json('You have to provide id for deactivating a student!');
         } else if (req.body.id === req.user._id) {
-            res.status = 404;
-            res.json({message: 'You cannot disable yourself!'});
-        } else if (req.body.userType === 'ADMIN') {
-            adminService.deactivateAdmin(req.body.id).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else if (req.body.userType === 'PROFESSOR') {
-            professorService.deactivateProfessor(req.body.id).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
-        } else if (req.body.userType === 'STUDENT') {
-            studentService.deactivateStudent(req.body.id).then(function (err, data) {
-                if (err) {
-                    res.json(err);
-                } else {
-                    res.json(data);
-                }
-            });
+            logger.error('You cannot disable yourself!');
+            res.status(404);
+            res.json('You cannot disable yourself!');
         } else {
-            res.status = 404;
-            res.json({message: 'You have provided wrong userType deactivating a user!'});
+            Student.deactivateStudent(req.body.id).then(
+                function (data) {
+                    logger.info('Deactivated student: ' + data._id);
+                    res.json(data);
+                }, function (err) {
+                    logger.error(err);
+                    res.json(err);
+                });
         }
-
     });
 
-    app.get('/user/getAllStudents', adminAndProfessorApproved, function (req, res) {
-        studentService.getAllStudents().then(function (err, data) {
-            if (err) {
-                res.json(err);
-            } else {
+    app.get('/student/getAllStudents', permissionMiddleware.adminApproved, function (req, res) {
+        Student.find({}).then(
+            function (data) {
+                logger.info('Get All Students');
                 res.json(data);
-            }
-        });
+            }, function (err) {
+                logger.error(err);
+                res.json(err);
+            });
     });
 
-    app.get('/user/getAllProfessors', adminApproved, function (req, res) {
-        professorService.getAllProfessors().then(function (err, data) {
-            if (err) {
-                res.json(err);
-            } else {
+    app.get('/student/getAllTraditionalStudents', permissionMiddleware.adminAndProfessorApproved, function (req, res) {
+        Student.find({studentType: 'Traditional'}).then(
+            function (data) {
+                logger.info('Get All Traditional Students');
                 res.json(data);
-            }
-        });
+            }, function (err) {
+                logger.error(err);
+                res.json(err);
+            });
     });
 
-    app.get('/user/getAllAdmins', adminApproved, function (req, res) {
-        adminService.getAllAdmins().then(function (err, data) {
-            if (err) {
-                console.dir(err);
-                res.json(err);
-            } else {
-                console.dir(data);
+    app.get('/student/getAllActiveStudents', permissionMiddleware.adminAndProfessorApproved, function (req, res) {
+        Student.find({isActive: true}).then(
+            function (data) {
+                logger.info('Get All active Students');
                 res.json(data);
-            }
-        });
+            }, function (err) {
+                logger.error(err);
+                res.json(err);
+            });
     });
 
 };

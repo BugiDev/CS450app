@@ -4,7 +4,8 @@ define([
     'modules/panelModule/panel.dashboard.ctrl',
     'modules/panelModule/panel.sidebarNav.ctrl',
     'modules/panelModule/panel.topNav.ctrl',
-    'modules/panelModule/panel.myProfile.ctrl'
+    'modules/panelModule/panel.myProfile.ctrl',
+    'modules/panelModule/panel.editProfile.ctrl'
 ], function (angular)/*invoke*/ {
     'use strict';
 

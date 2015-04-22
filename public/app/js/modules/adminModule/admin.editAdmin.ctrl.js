@@ -5,7 +5,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
     'use strict';
 
     adminModule
-        .controller('addNewAdminCtrl', function ($scope, adminsService, $rootScope, $stateParams, $state) {
+        .controller('editAdminCtrl', function ($scope, adminsService, $rootScope, $stateParams, $state) {
             $scope.admin = {
                 id: $stateParams.id
             };
@@ -35,7 +35,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
                     $scope.admin.picture = $scope.tmpPicture;
                 }
 
-                adminsService.editAdmin($scope.admin).then(
+                adminsService.editAdminProfile($scope.admin).then(
                     function(data){
                         console.log('Edit Admin success');
                         console.debug(data);

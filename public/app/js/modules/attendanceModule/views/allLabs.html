@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 ncy-breadcrumb></h1>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                All Labs
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" ng-init="init()">
+                        <thead>
+                        <tr>
+                            <th>Week Number</th>
+                            <th>Week Date</th>
+                            <th>Number of attenders</th>
+                            <th>Edit attendance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="lab in labs | orderBy:'+weekNum'">
+                            <td>{{lab.weekNum}}</td>
+                            <td>{{lab.weekDate | date:'yyyy/MM/dd'}} ({{lab.weekDate | date:'ww'}} week in year)</td>
+                            <td>{{lab.attenders.length}}</td>
+                            <td><button class="btn btn-default" ng-click="editAttendance(lab._id)"><span class="fa fa-pencil"></span></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div ng-hide="labs.length > 0">There are no available labs</div>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>

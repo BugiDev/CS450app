@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 ncy-breadcrumb></h1>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                All Lectures
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" ng-init="init()">
+                        <thead>
+                        <tr>
+                            <th>Week Number</th>
+                            <th>Week Date</th>
+                            <th>Number of attenders</th>
+                            <th>Edit attendance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="lecture in lectures | orderBy:'+weekNum'">
+                            <td>{{lecture.weekNum}}</td>
+                            <td>{{lecture.weekDate | date:'yyyy/MM/dd'}} ({{lecture.weekDate | date:'ww'}} week in year)</td>
+                            <td>{{lecture.attenders.length}}</td>
+                            <td><button class="btn btn-default" ng-click="editAttendance(lecture._id)"><span class="fa fa-pencil"></span></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div ng-hide="lectures.length > 0">There are no available lectures</div>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>
