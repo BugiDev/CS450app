@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var generatePassword = require('password-generator');
 var logger = require('../util/logger');
-var mailService = require('../services/mailService');
+var mailService = require('../util/mailService');
 
 var adminSchema = mongoose.Schema({
     firstName: {
@@ -48,13 +48,16 @@ adminSchema.methods.generateHash = function (password) {
 };
 
 adminSchema.statics.authenticateAdmin = function (id) {
+    'use strict';
     return this.findOneAndUpdate({'_id': id}, {lastLoginDate: new Date()}, {upsert: false}).lean().exec();
 };
 adminSchema.statics.updateAdmin = function (admin) {
+    'use strict';
     return this.findOneAndUpdate({'_id': admin._id}, admin, {upsert: false}).lean().exec();
 };
 
 adminSchema.statics.createAdmin = function (admin) {
+    'use strict';
     var promise = new mongoose.Promise;
     var self = this;
     this.findOne({'email': admin.email}).exec().then(
@@ -98,10 +101,12 @@ adminSchema.statics.createAdmin = function (admin) {
 };
 
 adminSchema.statics.deactivateAdmin = function (id) {
+    'use strict';
     return this.findOneAndUpdate({'_id': id}, {isActive: false}, {upsert: false}).lean().exec();
 };
 
 adminSchema.methods.logTime = function () {
+    'use strict';
     var promise = new mongoose.Promise;
     this.lastLoginDate = new Date();
     this.save(function (err) {

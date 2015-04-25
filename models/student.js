@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var generatePassword = require('password-generator');
 var logger = require('../util/logger');
-var mailService = require('../services/mailService');
+var mailService = require('../util/mailService');
 
 var studentSchema = mongoose.Schema({
     firstName: {
@@ -53,6 +53,56 @@ var studentSchema = mongoose.Schema({
     },
     picture: {
         type: String
+    },
+    preexamPoints:{
+        homeworkAssignment: [{
+            ordinalNum: {type: Number, required: true},
+            pointsAchieved: {type: Number, required: true},
+            maxPoints: {type: Number},
+            inputDate: {type: Date, default: new Date(), required: true},
+            remark: {type: String}
+        }],
+        tests:[{
+            ordinalNum: {type: Number, required: true},
+            pointsAchieved: {type: Number, required: true},
+            maxPoints: {type: Number, required: true},
+            inputDate: {type: Date, default: new Date(), required: true},
+            remark: {type: String}
+        }],
+        projects:[{
+            ordinalNum: {type: Number, required: true},
+            pointsAchieved: {type: Number, required: true},
+            maxPoints: {type: Number},
+            inputDate: {type: Date, default: new Date(), required: true},
+            remark: {type: String}
+        }],
+        classActivity: [{
+            ordinalNum: {type: Number, required: true},
+            pointsAchieved: {type: Number, required: true},
+            maxPoints: {type: Number},
+            inputDate: {type: Date, default: new Date(), required: true},
+            remark: {type: String}
+        }],
+        colloquium: [{
+            ordinalNum: {type: Number, required: true},
+            pointsAchieved: {type: Number, required: true},
+            maxPoints: {type: Number},
+            inputDate: {type: Date, default: new Date(), required: true},
+            remark: {type: String}
+        }],
+        seminarAssignment: [{
+            ordinalNum: {type: Number, required: true},
+            pointsAchieved: {type: Number, required: true},
+            maxPoints: {type: Number},
+            inputDate: {type: Date, default: new Date(), required: true},
+            remark: {type: String}
+        }]
+    },
+    examPoints:{
+        pointsAchieved: {type:Number},
+        maxPoints: {type: Number},
+        inputDate: {type: Date},
+        remark: {type: String}
     }
 });
 
@@ -62,16 +112,29 @@ studentSchema.methods.generateHash = function (password) {
 };
 
 studentSchema.statics.authenticateStudent = function (id) {
+    'use strict';
     return this.findOneAndUpdate({'_id': id}, {lastLoginDate: new Date()}, {upsert: false}).lean().exec();
 };
 
 studentSchema.statics.updateStudent = function (student) {
+    'use strict';
     return this.findOneAndUpdate({'_id': student._id}, student, {upsert: false}).lean().exec();
 };
 
+studentSchema.statics.updatePreexamPoints = function (id, preexamPoints) {
+    'use strict';
+    return this.findOneAndUpdate({'_id': id}, preexamPoints, {upsert: false}).lean().exec();
+};
+
+studentSchema.statics.updateExamPoints = function (id, examPoints) {
+    'use strict';
+    return this.findOneAndUpdate({'_id': id}, examPoints, {upsert: false}).lean().exec();
+};
+
 studentSchema.statics.createStudent = function (student) {
+    'use strict';
     var promise = new mongoose.Promise;
-    var self = this;
+    var Self = this;
     this.findOne({'email': student.email}).exec().then(
         function (user) {
             var err;
@@ -85,7 +148,7 @@ studentSchema.statics.createStudent = function (student) {
                 promise.error(err);
             } else {
                 var password = generatePassword(12, false, /\d/, 'met');
-                var newUser = new self();
+                var newUser = new Self();
                 newUser.email = student.email;
                 newUser.firstName = student.firstName;
                 newUser.lastName = student.lastName;
@@ -119,10 +182,12 @@ studentSchema.statics.createStudent = function (student) {
 };
 
 studentSchema.statics.deactivateStudent = function (id) {
+    'use strict';
     return this.findOneAndUpdate({'_id': id}, {isActive: false}, {upsert: false}).lean().exec();
 };
 
 studentSchema.methods.logTime = function () {
+    'use strict';
     var promise = new mongoose.Promise;
     this.lastLoginDate = new Date();
     this.save(function (err) {

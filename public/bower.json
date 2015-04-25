@@ -26,7 +26,8 @@
     "angular-image-crop": "*",
     "ngtoast": "~1.5.0",
     "angular-modal-service": "~0.6.6",
-    "angular-permission": "~0.2.0"
+    "angular-permission": "~0.2.0",
+    "angular-bootstrap": "~0.12.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.0",

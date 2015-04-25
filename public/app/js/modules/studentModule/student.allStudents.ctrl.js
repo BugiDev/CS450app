@@ -59,5 +59,9 @@ require(['modules/studentModule/student.module'], function (studentModule) {
                 });
             };
 
+            $scope.editStudentPoints = function(id){
+                $location.path('/editStudentPoints/' + id);
+            };
+
         });
 });

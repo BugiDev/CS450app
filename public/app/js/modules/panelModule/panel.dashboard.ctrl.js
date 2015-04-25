@@ -5,7 +5,7 @@ require(['modules/panelModule/panel.module'], function (panelModule) {
     'use strict';
 
     panelModule
-        .controller('dashboardCtrl', function ($scope, studentsService, attendanceService, $filter) {
+        .controller('dashboardCtrl', function ($scope, studentsService, attendanceService, $filter, $location) {
 
             $scope.students = {};
             $scope.chartDataLectures = [];
@@ -14,7 +14,7 @@ require(['modules/panelModule/panel.module'], function (panelModule) {
             $scope.init = function () {
                 studentsService.getAllActiveStudents().then(
                     function (data) {
-                        $scope.students = data
+                        $scope.students = data;
                     }, function (err) {
                         $scope.students = err;
                     });
@@ -82,7 +82,7 @@ require(['modules/panelModule/panel.module'], function (panelModule) {
             $scope.init();
 
             $scope.editStudentPoints = function(id){
-
+                $location.path('/editStudentPoints/' + id);
             };
 
         });

@@ -4,7 +4,8 @@ define([
     'modules/studentModule/student.service',
     'modules/studentModule/student.addNewStudent.ctrl',
     'modules/studentModule/student.allStudents.ctrl',
-    'modules/studentModule/student.editStudent.ctrl'
+    'modules/studentModule/student.editStudent.ctrl',
+    'modules/studentModule/student.editStudentPoints.ctrl'
 ], function (angular)/*invoke*/ {
     'use strict';
 

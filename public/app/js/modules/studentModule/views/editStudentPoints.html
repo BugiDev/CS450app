@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 ncy-breadcrumb></h1>
+    </div>
+</div>
+
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Student profile
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <div class="user-info">
+                            <span class="label">User Type</span>
+                            <br/>
+                            <span class="form-static-usertype user-type">STUDENT</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">First Name</span>
+                            <br/>
+                            <span class="info">{{student.firstName}}</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">Last Name</span>
+                            <br/>
+                            <span class="info">{{student.lastName}}</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">Email</span>
+                            <br/>
+                            <span class="info">{{student.email}}</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">Generation</span>
+                            <br/>
+                            <span class="info">{{student.generation}}</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">Index Number</span>
+                            <br/>
+                            <span class="info">{{student.indexNum}}</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">Student Type</span>
+                            <br/>
+                            <span class="info">{{student.studentType}}</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">Preexam Points</span>
+                            <br/>
+                            <span class="info">{{preexamPoints}}</span>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="label">Exam Points</span>
+                            <br/>
+                            <span class="info">{{student.examPoints.pointsAchieved || 0}} / {{student.examPoints.maxPoints || 0}}</span>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6" ng-show="student.picture">
+                        <div class="form-group center-text">
+                            <span class="label">Student picture</span>
+
+                            <div class="image-crop-result">
+                                <img ng-src="{{ student.picture }}" alt="The Cropped Image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+
+    </div>
+    <!-- /.col-lg-8 -->
+
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <tabset>
+        <tab heading="Homework Assignments">Homework Assignments</tab>
+        <tab heading="Tests">Tests</tab>
+        <tab heading="Projects">Projects</tab>
+        <tab heading="Class Activity">Class Activity</tab>
+        <tab heading="Colloquiums">Colloquiums</tab>
+        <tab heading="Seminar Assignments">Seminar Assignments</tab>
+        <tab heading="Exam Points">Exam Points</tab>
+    </tabset>
+</div>

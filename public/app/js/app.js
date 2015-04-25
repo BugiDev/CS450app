@@ -46,6 +46,7 @@ define([
             'ngToast',
             'angularModalService',
             'permission',
+            'ui.bootstrap',
 
             /*angJSDeps*/
             'ngCookies',
@@ -389,6 +390,24 @@ define([
                     ncyBreadcrumb: {
                         parent: 'panel.content.allLabs',
                         label: 'Edit Lab'
+                    }
+                }).state('panel.content.editStudentPoints', {
+                    url: '^/editStudentPoints/:id',
+                    views: {
+                        'panel-content': {
+                            controller: 'editStudentPointsCtrl',
+                            templateUrl: 'js/modules/studentModule/views/editStudentPoints.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            except: ['student', 'anonymous'],
+                            redirectTo: 'panel.content.dashboard'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'panel.content.dashboard',
+                        label: 'Edit Student Points'
                     }
                 });
 

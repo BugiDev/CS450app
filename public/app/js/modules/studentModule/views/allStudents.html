@@ -26,11 +26,12 @@
                             <th>Active</th>
                             <th>Last Active Date</th>
                             <th>Edit</th>
+                            <th>Edit Student Points</th>
                             <th>Deactivate</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="student in students">
+                        <tr ng-repeat="student in students" ng-click="editStudentPoints(student._id)">
                             <td>{{student.indexNum}}</td>
                             <td>{{student.firstName}}</td>
                             <td>{{student.lastName}}</td>
@@ -38,8 +39,9 @@
                             <td>{{student.generation}}</td>
                             <td>{{student.studentType}}</td>
                             <td><span class="fa fa-check color-green" ng-show="student.isActive"></span><span class="fa fa-times color-met" ng-show="!student.isActive"></span></td>
-                            <td>{{student.lastLoginDate | date:"dd/MM/yyyy 'at' h:mma"}}
+                            <td>{{student.lastLoginDate | date:'dd/MM/yyyy ' + at + ' h:mma'}}
                             <td><button class="btn btn-default" ng-click="editStudent(student._id)"><span class="fa fa-pencil"></span></button></td>
+                            <td><button class="btn btn-default" ng-click="editStudentPoints(student._id)"><span class="fa fa-pencil"></span></button></td>
                             <td><button class="btn btn-met" ng-click="showModalDialog(student._id)"><span class="fa fa-times-circle"></span></button></span></td>
                         </tr>
                         </tbody>

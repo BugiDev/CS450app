@@ -5,9 +5,11 @@
         "require",
         "module",
         "requirejs",
-        "pei"
+        "_",
+        "Morris"
     ],
 
+    "-W058": false,
     "bitwise": true,
     "camelcase": true,
     "curly": true,
@@ -80,7 +82,9 @@
         "ngRoutes": false,
         "ngSanitize": false,
         "ngCookies": false,
-        "ngResource": false
+        "ngResource": false,
+        "_": true,
+        "Morris": true
     }
 }
 

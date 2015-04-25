@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var generatePassword = require('password-generator');
 var logger = require('../util/logger');
-var mailService = require('../services/mailService');
+var mailService = require('../util/mailService');
 
 var professorSchema = mongoose.Schema({
     firstName: {

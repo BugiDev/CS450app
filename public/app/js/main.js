@@ -16,6 +16,7 @@ require.config({
         'ngtoast': '../bower_components/ngtoast/dist/ngToast.min',
         'angular-permission': '../bower_components/angular-permission/dist/angular-permission',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
+        'angular-bootstrap': '../bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
         'angular-ui-router': '../bower_components/angular-ui-router/release/angular-ui-router',
         'angular-localStorage': '../bower_components/angular-local-storage/dist/angular-local-storage',
         'underscore': '../bower_components/underscore/underscore-min',
@@ -39,6 +40,7 @@ require.config({
         'ngtoast': ['angular'],
         'angular-modal-service': ['angular'],
         'angular-permission': ['angular'],
+        'angular-bootstrap': ['angular'],
         'angular-mocks': {
             deps: [
                 'angular'
@@ -76,6 +78,7 @@ require([
     'angular-image-crop',
     'angular-modal-service',
     'angular-permission',
+    'angular-bootstrap',
     'ngtoast',
     'bootstrap'
 ], function (angular, app, ngCookies, ngSanitize, ngResource, ngAnimate, ngTouch, ngMessages, uiRouter, localStorage) {

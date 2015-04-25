@@ -107,6 +107,46 @@ require(['modules/studentModule/student.module'], function (studentModule) {
                 return deferred.promise;
             };
 
+            this.updatePreexamPoints = function (id, preexamPoints) {
+                var deferred = $q.defer();
+                $http.post(config.apiBaseURL + config.updatePreexamPointsUrl, {id: id, preexamPoints: preexamPoints})
+                    .success(function (data, status, headers, config) {
+                        console.log('Updating preexam points Success!');
+                        console.debug(data);
+                        deferred.resolve(data);
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log('Updating preexam points Error!');
+                        console.debug(data);
+                        deferred.reject({
+                            status: status,
+                            message: data
+                        });
+                    });
+
+                return deferred.promise;
+            };
+
+            this.updateExamPoints = function (id, examPoints) {
+                var deferred = $q.defer();
+                $http.post(config.apiBaseURL + config.updateExamPointsUrl, {id: id, examPoints: examPoints})
+                    .success(function (data, status, headers, config) {
+                        console.log('Updating exam points Success!');
+                        console.debug(data);
+                        deferred.resolve(data);
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log('Updating exam points Error!');
+                        console.debug(data);
+                        deferred.reject({
+                            status: status,
+                            message: data
+                        });
+                    });
+
+                return deferred.promise;
+            };
+
             this.createNewStudent = function (student) {
                 var deferred = $q.defer();
                 $http.post(config.apiBaseURL + config.createNewStudentUrl, {user: student})

@@ -34,6 +34,8 @@ define([
             getAllStudentsUrl: '/student/getAllStudents',
             getAllTraditionalStudentsUrl: '/student/getAllTraditionalStudents',
             getAllActiveStudentsUrl: '/student/getAllActiveStudents',
+            updatePreexamPointsUrl: '/student/updatePreexamPoints',
+            updateExamPointsUrl: '/student/updateExamPoints',
 
             getAllAttendanceUrl: '/attendance/getAllAttendance',
             getAllLecturesUrl: '/attendance/lectures/getAllLectureAttendance',

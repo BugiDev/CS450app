@@ -124,6 +124,8 @@ html, body{
 
 #page-wrapper{
     height: 100%;
+    display:block;
+    overflow:auto;
 }
 
 .ng-toast{
@@ -137,4 +139,18 @@ html, body{
 
 .selected-row{
     background-color: #F3EDEF;
+}
+
+.user-info{
+    margin-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+.user-info .info{
+    padding: .2em .6em .3em;
+}
+
+.user-info .user-type{
+    margin-left: 9px;
 }
