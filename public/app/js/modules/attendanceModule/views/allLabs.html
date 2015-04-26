@@ -28,7 +28,7 @@
                             <td>{{lab.weekNum}}</td>
                             <td>{{lab.weekDate | date:'yyyy/MM/dd'}} ({{lab.weekDate | date:'ww'}} week in year)</td>
                             <td>{{lab.attenders.length}}</td>
-                            <td><button class="btn btn-default" ng-click="editAttendance(lab._id)"><span class="fa fa-pencil"></span></button></td>
+                            <td><button class="btn btn-default" ng-click="editAttendance(lab._id)" tooltip="Edit lab"><span class="fa fa-pencil"></span></button></td>
                         </tr>
                         </tbody>
                     </table>

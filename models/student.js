@@ -101,7 +101,7 @@ var studentSchema = mongoose.Schema({
     examPoints:{
         pointsAchieved: {type:Number},
         maxPoints: {type: Number},
-        inputDate: {type: Date},
+        inputDate: {type: Date, default: new Date()},
         remark: {type: String}
     }
 });
@@ -123,12 +123,30 @@ studentSchema.statics.updateStudent = function (student) {
 
 studentSchema.statics.updatePreexamPoints = function (id, preexamPoints) {
     'use strict';
-    return this.findOneAndUpdate({'_id': id}, preexamPoints, {upsert: false}).lean().exec();
+    var promise = new mongoose.Promise;
+    this.update({_id: id}, {preexamPoints: preexamPoints}, function (err, doc) {
+        if (err) {
+            logger.error(err);
+            promise.error(err);
+        } else {
+            promise.complete(doc);
+        }
+    });
+    return promise;
 };
 
 studentSchema.statics.updateExamPoints = function (id, examPoints) {
     'use strict';
-    return this.findOneAndUpdate({'_id': id}, examPoints, {upsert: false}).lean().exec();
+    var promise = new mongoose.Promise;
+    this.update({_id: id}, {examPoints: examPoints}, function (err, doc) {
+        if (err) {
+            logger.error(err);
+            promise.error(err);
+        } else {
+            promise.complete(doc);
+        }
+    });
+    return promise;
 };
 
 studentSchema.statics.createStudent = function (student) {

@@ -93,13 +93,208 @@
 <!-- /.row -->
 
 <div class="row">
-    <tabset>
-        <tab heading="Homework Assignments">Homework Assignments</tab>
-        <tab heading="Tests">Tests</tab>
-        <tab heading="Projects">Projects</tab>
-        <tab heading="Class Activity">Class Activity</tab>
-        <tab heading="Colloquiums">Colloquiums</tab>
-        <tab heading="Seminar Assignments">Seminar Assignments</tab>
-        <tab heading="Exam Points">Exam Points</tab>
+
+    <tabset class="tab-general">
+        <tab heading="Homework Assignments">
+            <div class="tab-content">
+                <form role="form" name="homeworkAssignmentForm" ng-submit="editPreexamPoints()" novalidate>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Homework assignment number</th>
+                            <th>Achieved points</th>
+                            <th>Max points</th>
+                            <th>Remark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="homework in student.preexamPoints.homeworkAssignment">
+                            <td><p class="form-control-static">Homework assignment {{homework.ordinalNum}}</p></td>
+                            <td><input class="form-control" type="number" placeholder="Input achieved points" ng-model="homework.pointsAchieved"></td>
+                            <td><input class="form-control" type="number" placeholder="Input max points" ng-model="homework.maxPoints"></td>
+                            <td><textarea class="form-control" rows="1" placeholder="Input remark" ng-model="homework.remark"></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    <button type="button" class="btn btn-add" value="Add new homework assignment" ng-click="addNewPointsRow('homeworkAssignment')"><b>+</b></button>
+
+                </form>
+            </div>
+        </tab>
+        <tab heading="Tests">
+            <div class="tab-content">
+                <form role="form" name="testsForm" ng-submit="editPreexamPoints()" novalidate>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Tests number</th>
+                            <th>Achieved points</th>
+                            <th>Max points</th>
+                            <th>Remark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="test in student.preexamPoints.tests">
+                            <td><p class="form-control-static">Test {{test.ordinalNum}}</p></td>
+                            <td><input class="form-control" type="number" placeholder="Input achieved points" ng-model="test.pointsAchieved"></td>
+                            <td><input class="form-control" type="number" placeholder="Input max points" ng-model="test.maxPoints"></td>
+                            <td><textarea class="form-control" rows="1" placeholder="Input remark" ng-model="test.remark"></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('tests')"><b>+</b></button>
+
+                </form>
+            </div>
+        </tab>
+        <tab heading="Projects">
+            <div class="tab-content">
+                <form role="form" name="projectsForm" ng-submit="editPreexamPoints()" novalidate>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Projects number</th>
+                            <th>Achieved points</th>
+                            <th>Max points</th>
+                            <th>Remark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="project in student.preexamPoints.projects">
+                            <td><p class="form-control-static">Project {{project.ordinalNum}}</p></td>
+                            <td><input class="form-control" type="number" placeholder="Input achieved points" ng-model="project.pointsAchieved"></td>
+                            <td><input class="form-control" type="number" placeholder="Input max points" ng-model="project.maxPoints"></td>
+                            <td><textarea class="form-control" rows="1" placeholder="Input remark" ng-model="project.remark"></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('projects')"><b>+</b></button>
+
+                </form>
+            </div>
+        </tab>
+        <tab heading="Class Activity">
+            <div class="tab-content">
+                <form role="form" name="classActivityForm" ng-submit="editPreexamPoints()" novalidate>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Class Activity number</th>
+                            <th>Achieved points</th>
+                            <th>Max points</th>
+                            <th>Remark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="classActivity in student.preexamPoints.classActivity">
+                            <td><p class="form-control-static">Class Activity {{classActivity.ordinalNum}}</p></td>
+                            <td><input class="form-control" type="number" placeholder="Input achieved points" ng-model="classActivity.pointsAchieved"></td>
+                            <td><input class="form-control" type="number" placeholder="Input max points" ng-model="classActivity.maxPoints"></td>
+                            <td><textarea class="form-control" rows="1" placeholder="Input remark" ng-model="classActivity.remark"></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('classActivity')"><b>+</b></button>
+
+                </form>
+            </div>
+        </tab>
+        <tab heading="Colloquiums">
+            <div class="tab-content">
+                <form role="form" name="colloquiumForm" ng-submit="editPreexamPoints()" novalidate>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Colloquium number</th>
+                            <th>Achieved points</th>
+                            <th>Max points</th>
+                            <th>Remark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="colloquium in student.preexamPoints.colloquium">
+                            <td><p class="form-control-static">Colloquium {{colloquium.ordinalNum}}</p></td>
+                            <td><input class="form-control" type="number" placeholder="Input achieved points" ng-model="colloquium.pointsAchieved"></td>
+                            <td><input class="form-control" type="number" placeholder="Input max points" ng-model="colloquium.maxPoints"></td>
+                            <td><textarea class="form-control" rows="1" placeholder="Input remark" ng-model="colloquium.remark"></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('colloquium')"><b>+</b></button>
+
+                </form>
+            </div>
+        </tab>
+        <tab heading="Seminar Assignments">
+            <div class="tab-content">
+                <form role="form" name="seminarAssignmentForm" ng-submit="editPreexamPoints()" novalidate>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Seminar Assignment number</th>
+                            <th>Achieved points</th>
+                            <th>Max points</th>
+                            <th>Remark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="seminarAssignment in student.preexamPoints.seminarAssignment">
+                            <td><p class="form-control-static">Seminar Assignment {{seminarAssignment.ordinalNum}}</p></td>
+                            <td><input class="form-control" type="number" placeholder="Input achieved points" ng-model="seminarAssignment.pointsAchieved"></td>
+                            <td><input class="form-control" type="number" placeholder="Input max points" ng-model="seminarAssignment.maxPoints"></td>
+                            <td><textarea class="form-control" rows="1" placeholder="Input remark" ng-model="seminarAssignment.remark"></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('seminarAssignment')"><b>+</b></button>
+
+                </form>
+            </div>
+        </tab>
+        <tab heading="Exam Points">
+            <div class="tab-content">
+                <form role="form" name="examPointsForm" ng-submit="editExamPoints()" novalidate>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Achieved points</th>
+                            <th>Max points</th>
+                            <th>Remark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input class="form-control" type="number" placeholder="Input achieved points" ng-model="student.examPoints.pointsAchieved"></td>
+                            <td><input class="form-control" type="number" placeholder="Input max points" ng-model="student.examPoints.maxPoints"></td>
+                            <td><textarea class="form-control" rows="1" placeholder="Input remark" ng-model="student.examPoints.remark"></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+
+                </form>
+            </div>
+        </tab>
     </tabset>
+
 </div>

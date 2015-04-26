@@ -22,7 +22,6 @@
                             <th>Index number</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Email</th>
                             <th>Generation</th>
                             <th>Student Type</th>
                             <th>Edit Student Points</th>
@@ -33,10 +32,9 @@
                             <td>{{student.indexNum}}</td>
                             <td>{{student.firstName}}</td>
                             <td>{{student.lastName}}</td>
-                            <td>{{student.email}}</td>
                             <td>{{student.generation}}</td>
                             <td>{{student.studentType}}</td>
-                            <td><button class="btn btn-default" ng-click="editStudentPoints(student._id)"><span class="fa fa-pencil"></span></button></td>
+                            <td><button class="btn btn-default" ng-click="editStudentPoints(student._id)" tooltip="Edit student points"><span class="fa fa-pencil"></span></button></td>
                         </tr>
                         </tbody>
                     </table>

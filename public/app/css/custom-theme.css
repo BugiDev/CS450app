@@ -154,3 +154,57 @@ html, body{
 .user-info .user-type{
     margin-left: 9px;
 }
+
+.btn-met {
+    color: #fff;
+    background-color: #a70532;
+    border-color: #a70532;
+}
+
+.btn-add {
+    color: #fff;
+    background-color: #0D9F64;
+    border-color: #0D9F64;
+}
+
+.tab-general{
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.tab-content{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    color: #a70532;
+}
+
+.tooltip-inner{
+    background-color: #a70532;
+}
+.tooltip.top .tooltip-arrow {
+    border-top-color: #a70532;
+}
+.tooltip.top-left .tooltip-arrow {
+    border-top-color: #a70532;
+}
+.tooltip.top-right .tooltip-arrow {
+    border-top-color: #a70532;
+}
+.tooltip.right .tooltip-arrow {
+    border-right-color: #a70532;
+}
+.tooltip.left .tooltip-arrow {
+    border-left-color: #a70532;
+}
+.tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #a70532;
+}
+.tooltip.bottom-left .tooltip-arrow {
+    border-bottom-color: #a70532;
+}
+.tooltip.bottom-right .tooltip-arrow {
+    border-bottom-color: #a70532;
+}

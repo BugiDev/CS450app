@@ -25,7 +25,15 @@ db.once('open', function () {
 
 require('./config/passport')(passport);
 
-app.use('/', express.static(path.join(__dirname, 'public/app')));
+
+if(process.argv[2] === 'dev'){
+    app.use('/', express.static(path.join(__dirname, 'public/app')));
+}else if(process.argv[2] === 'deploy'){
+    app.use('/', express.static(path.join(__dirname, 'public/deploy')));
+}else{
+    app.use('/', express.static(path.join(__dirname, 'public/app')));
+}
+
 app.use(cookieParser('bogdanbegovic'));
 app.use(bodyParser({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb'}));

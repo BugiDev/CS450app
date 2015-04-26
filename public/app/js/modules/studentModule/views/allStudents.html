@@ -40,9 +40,9 @@
                             <td>{{student.studentType}}</td>
                             <td><span class="fa fa-check color-green" ng-show="student.isActive"></span><span class="fa fa-times color-met" ng-show="!student.isActive"></span></td>
                             <td>{{student.lastLoginDate | date:'dd/MM/yyyy ' + at + ' h:mma'}}
-                            <td><button class="btn btn-default" ng-click="editStudent(student._id)"><span class="fa fa-pencil"></span></button></td>
-                            <td><button class="btn btn-default" ng-click="editStudentPoints(student._id)"><span class="fa fa-pencil"></span></button></td>
-                            <td><button class="btn btn-met" ng-click="showModalDialog(student._id)"><span class="fa fa-times-circle"></span></button></span></td>
+                            <td><button class="btn btn-default" ng-click="editStudent(student._id); $event.preventDefault();$event.stopPropagation();" tooltip="Edit student profile"><span class="fa fa-pencil"></span></button></td>
+                            <td><button class="btn btn-default" ng-click="editStudentPoints(student._id)" tooltip="Edit student points"><span class="fa fa-pencil"></span></button></td>
+                            <td><button class="btn btn-met" ng-click="showModalDialog(student._id); $event.preventDefault();$event.stopPropagation();" tooltip="Deactivate student"><span class="fa fa-times-circle"></span></button></span></td>
                         </tr>
                         </tbody>
                     </table>
