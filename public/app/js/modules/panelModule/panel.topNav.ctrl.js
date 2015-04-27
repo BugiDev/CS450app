@@ -5,7 +5,7 @@ require(['modules/panelModule/panel.module'], function (dashboardModule) {
     'use strict';
 
     dashboardModule
-        .controller('topNavCtrl', function ($scope, userService, ngToast) {
+        .controller('topNavCtrl', function ($scope, userService) {
 
             $scope.user = {};
 
@@ -50,28 +50,6 @@ require(['modules/panelModule/panel.module'], function (dashboardModule) {
 
             $scope.logout = function () {
                 userService.logout();
-            };
-
-            $scope.$on('toast-error', function (event, args) {
-                $scope.errorToast(args.message);
-            });
-
-            $scope.$on('toast-success', function (event, args) {
-                $scope.successToast(args.message);
-            });
-
-            $scope.errorToast = function (text) {
-                var aToast = ngToast.create({
-                    className: 'danger',
-                    content: text
-                });
-            };
-
-            $scope.successToast = function (text) {
-                var aToast = ngToast.create({
-                    className: 'success',
-                    content: text
-                });
             };
 
         });

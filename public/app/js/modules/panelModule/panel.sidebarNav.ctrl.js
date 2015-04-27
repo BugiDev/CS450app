@@ -7,6 +7,8 @@ require(['modules/panelModule/panel.module'], function (dashboardModule) {
     dashboardModule
         .controller('sidebarNavCtrl', function ($scope, userService) {
             $scope.user = {};
+            $scope.alerts = [];
+
             $scope.init = function(){
                 $('#side-menu').metisMenu();
                 userService.getUserProfile().then(function(data){
@@ -17,5 +19,19 @@ require(['modules/panelModule/panel.module'], function (dashboardModule) {
             };
 
             $scope.init();
+
+            $scope.closeAlert = function(index) {
+                $scope.alerts.splice(index, 1);
+            };
+
+            $scope.$on('toast-error', function (event, args) {
+                $scope.alerts.push({type: 'danger', msg: args.message});
+
+            });
+
+            $scope.$on('toast-success', function (event, args) {
+                $scope.alerts.push({type: 'success', msg: args.message});
+            });
+
         });
 });

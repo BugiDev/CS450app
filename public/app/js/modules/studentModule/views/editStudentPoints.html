@@ -70,6 +70,12 @@
                             <span class="info">{{student.examPoints.pointsAchieved || 0}} / {{student.examPoints.maxPoints || 0}}</span>
                         </div>
 
+                        <div class="user-info">
+                            <span class="label">Total points</span>
+                            <br/>
+                            <span class="form-static-usertype user-type">{{totalPoints}}</span>
+                        </div>
+
                     </div>
                     <div class="col-lg-6" ng-show="student.picture">
                         <div class="form-group center-text">
@@ -118,8 +124,10 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
-                    <button type="button" class="btn btn-add" value="Add new homework assignment" ng-click="addNewPointsRow('homeworkAssignment')"><b>+</b></button>
+                    <div class="points-edit-button">
+                        <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                        <button type="button" class="btn btn-add" value="Add new homework assignment" ng-click="addNewPointsRow('homeworkAssignment')"><b>+</b></button>
+                    </div>
 
                 </form>
             </div>
@@ -147,8 +155,10 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
-                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('tests')"><b>+</b></button>
+                    <div class="points-edit-button">
+                        <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                        <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('tests')"><b>+</b></button>
+                    </div>
 
                 </form>
             </div>
@@ -176,8 +186,10 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
-                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('projects')"><b>+</b></button>
+                    <div class="points-edit-button">
+                        <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                        <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('projects')"><b>+</b></button>
+                    </div>
 
                 </form>
             </div>
@@ -205,8 +217,10 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
-                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('classActivity')"><b>+</b></button>
+                    <div class="points-edit-button">
+                        <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                        <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('classActivity')"><b>+</b></button>
+                    </div>
 
                 </form>
             </div>
@@ -234,8 +248,10 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
-                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('colloquium')"><b>+</b></button>
+                    <div class="points-edit-button">
+                        <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                        <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('colloquium')"><b>+</b></button>
+                    </div>
 
                 </form>
             </div>
@@ -263,8 +279,10 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
-                    <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('seminarAssignment')"><b>+</b></button>
+                    <div class="points-edit-button">
+                        <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                        <button type="button" class="btn btn-add" value="Add new tests" ng-click="addNewPointsRow('seminarAssignment')"><b>+</b></button>
+                    </div>
 
                 </form>
             </div>
@@ -290,7 +308,9 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    <div class="points-edit-button">
+                        <button type="submit" class="btn btn-met" value="Submit">Save points</button>
+                    </div>
 
                 </form>
             </div>

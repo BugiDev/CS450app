@@ -11,6 +11,7 @@ require(['modules/studentModule/student.module'], function (studentModule) {
                 id: $stateParams.id
             };
             $scope.preexamPoints = '';
+            $scope.totalPoints = '';
 
             $scope.init = function(){
                 studentsService.getStudentByID($scope.student.id).then(
@@ -23,32 +24,31 @@ require(['modules/studentModule/student.module'], function (studentModule) {
                 );
             };
 
-            $scope.$watch(
-                function(scope) { return scope.student.preexamPoints; },
-                function(newValue, oldValue) {
-                    var achievedPoints = 0;
-                    var maxPoints = 0;
+            $scope.$watch(function(){
+                return ['student.preexamPoints','student.examPoints'].map(angular.bind($scope, $scope.$eval));
+            }, function(newV){
+                var achievedPoints = 0;
+                var maxPoints = 0;
 
-                    for(var x in $scope.student.preexamPoints){
-                        if($scope.student.preexamPoints[x].length > 0){
-                            _.each($scope.student.preexamPoints[x], function(element, index, list){
-                                if(element.pointsAchieved){
-                                    achievedPoints += element.pointsAchieved;
-                                }
-                                if(element.maxPoints){
-                                    maxPoints += element.maxPoints;
-                                }
-                            });
-                        }
+                for(var x in $scope.student.preexamPoints){
+                    if($scope.student.preexamPoints[x].length > 0){
+                        _.each($scope.student.preexamPoints[x], function(element, index, list){
+                            if(element.pointsAchieved){
+                                achievedPoints += element.pointsAchieved;
+                            }
+                            if(element.maxPoints){
+                                maxPoints += element.maxPoints;
+                            }
+                        });
                     }
+                }
 
-                    $scope.preexamPoints = achievedPoints + ' / ' + maxPoints;
-                },
-                true);
+                $scope.preexamPoints = achievedPoints + ' / ' + maxPoints;
+
+                $scope.totalPoints = (achievedPoints + ($scope.student.examPoints.pointsAchieved || 0)) + ' / ' + (maxPoints + ($scope.student.examPoints.maxPoints || 0));
+            },true);
 
             $scope.editPreexamPoints = function(){
-                console.log('PREEXAM');
-                console.debug($scope.student.preexamPoints);
                 studentsService.updatePreexamPoints($scope.student._id, $scope.student.preexamPoints).then(
                     function(data){
                         console.log('Edit Student preexam points success');

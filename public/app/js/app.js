@@ -43,7 +43,6 @@ define([
             'LocalStorageModule',
             'ncy-angular-breadcrumb',
             'ImageCropper',
-            'ngToast',
             'angularModalService',
             'permission',
             'ui.bootstrap',

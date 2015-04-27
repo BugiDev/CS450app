@@ -13,7 +13,6 @@ require.config({
         'angular-breadcrumb': '../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min',
         'angular-image-crop': '../bower_components/angular-image-crop/image-crop',
         'angular-modal-service': '../bower_components/angular-modal-service/dst/angular-modal-service.min',
-        'ngtoast': '../bower_components/ngtoast/dist/ngToast.min',
         'angular-permission': '../bower_components/angular-permission/dist/angular-permission',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         'angular-bootstrap': '../bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
@@ -37,7 +36,6 @@ require.config({
         'angular-localStorage': ['angular'],
         'angular-breadcrumb': ['angular'],
         'angular-image-crop': ['angular'],
-        'ngtoast': ['angular'],
         'angular-modal-service': ['angular'],
         'angular-permission': ['angular'],
         'angular-bootstrap': ['angular'],
@@ -79,7 +77,6 @@ require([
     'angular-modal-service',
     'angular-permission',
     'angular-bootstrap',
-    'ngtoast',
     'bootstrap'
 ], function (angular, app, ngCookies, ngSanitize, ngResource, ngAnimate, ngTouch, ngMessages, uiRouter, localStorage) {
     'use strict';

@@ -126,10 +126,15 @@ html, body{
     height: 100%;
     display:block;
     overflow:auto;
+    padding-bottom: 50px;
 }
 
-.ng-toast{
-    margin-top: 65px !important;
+#wrapper{
+    overflow: hidden;
+}
+
+.table{
+    margin-bottom: 0;
 }
 
 .modal-header{
@@ -207,4 +212,14 @@ html, body{
 }
 .tooltip.bottom-right .tooltip-arrow {
     border-bottom-color: #a70532;
+}
+
+.alert-container{
+    padding: 10px;
+    margin-top: 10px;
+    overflow: auto;
+}
+
+.points-edit-button{
+    margin-top: 10px;
 }

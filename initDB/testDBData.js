@@ -6,10 +6,14 @@ var colors = require('colors/safe');
 var logger = require('../util/logger');
 var Attendance = require('../models/attendance');
 var Admin = require('../models/admin');
+var Professor = require('../models/professor');
+var Student = require('../models/student');
 var Q = require('q');
 var _ = require('underscore');
 
 var deferredAdmin = Q.defer();
+var deferredProfessor = Q.defer();
+var deferredStudentt = Q.defer();
 var deferredLabs = Q.defer();
 var deferredLectures = Q.defer();
 
@@ -23,25 +27,24 @@ db.on('error', function () {
 });
 db.once('open', function () {
     'use strict';
-
-    console.log('DB opened OK!');
+    logger.info(colors.green('DB opened OK!'));
 
     var lectureDates = new Date();
 //var lectureDates = [values...]
     var labDates = new Date();
 //var labDates = [values...]
 
-    Admin.findOne({firstName: 'admin', lastName: 'admin'}).then(
+    Admin.findOne({email: 'admin@cs450app.com'}).then(
         function (data) {
             if (!data) {
                 var admin = new Admin();
                 admin.firstName = 'admin';
                 admin.lastName = 'admin';
-                admin.email = 'admin@admin.com';
+                admin.email = 'admin@cs450app.com';
                 admin.password = admin.generateHash('admin123');
                 admin.save(function (err) {
                     if (err) {
-                        console.log(err);
+                        logger.error(colors.red.underline(err));
                         deferredAdmin.reject(err);
                     } else {
                         logger.info(colors.green('Added default admin. Username: ' + admin.email + ' | Password: ' + admin.password));
@@ -54,6 +57,32 @@ db.once('open', function () {
         }, function (err) {
             logger.error(colors.red.underline(err));
             deferredAdmin.reject(err);
+        }
+    );
+
+    Professor.findOne({email: 'professor@cs450app.com'}).then(
+        function (data) {
+            if (!data) {
+                var professor = new Professor();
+                professor.firstName = 'professor';
+                professor.lastName = 'professor';
+                professor.email = 'professor@cs450app.com';
+                professor.password = professor.generateHash('professor123');
+                professor.save(function (err) {
+                    if (err) {
+                        logger.error(colors.red.underline(err));
+                        deferredProfessor.reject(err);
+                    } else {
+                        logger.info(colors.green('Added default professor. Username: ' + professor.email + ' | Password: ' + professor.password));
+                        deferredProfessor.resolve();
+                    }
+                });
+            }else{
+                deferredProfessor.reject('Default admin already created');
+            }
+        }, function (err) {
+            logger.error(colors.red.underline(err));
+            deferredProfessor.reject(err);
         }
     );
 
