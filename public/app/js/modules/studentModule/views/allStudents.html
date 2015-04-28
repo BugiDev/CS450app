@@ -28,6 +28,7 @@
                             <th>Edit</th>
                             <th>Edit Student Points</th>
                             <th>Deactivate</th>
+                            <th>Reset Password</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,12 +43,14 @@
                             <td>{{student.lastLoginDate | date:'dd/MM/yyyy ' + at + ' h:mma'}}
                             <td><button class="btn btn-default" ng-click="editStudent(student._id); $event.preventDefault();$event.stopPropagation();" tooltip="Edit student profile"><span class="fa fa-pencil"></span></button></td>
                             <td><button class="btn btn-default" ng-click="editStudentPoints(student._id)" tooltip="Edit student points"><span class="fa fa-pencil"></span></button></td>
-                            <td><button class="btn btn-met" ng-click="showModalDialog(student._id); $event.preventDefault();$event.stopPropagation();" tooltip="Deactivate student"><span class="fa fa-times-circle"></span></button></span></td>
+                            <td><button class="btn btn-met" ng-hide="user.userType !== 'ADMIN'" ng-click="showModalDialog(student._id,  student.firstName, student.lastName); $event.preventDefault();$event.stopPropagation();" tooltip="Deactivate student"><span class="fa fa-times-circle"></span></button></td>
+                            <td><button class="btn btn-met" ng-hide="user.userType !== 'ADMIN'" ng-click="showResetPasswordModalDialog(student._id,  student.firstName, student.lastName); $event.preventDefault();$event.stopPropagation();" tooltip="Reset password"><span class="fa fa-key"></span></button></td>
                         </tr>
                         </tbody>
                     </table>
-                    <div ng-hide="students.length > 0">There are no available students</div>
+                    <div ng-show="students.length === 0">There are no available students</div>
                 </div>
+                <div class="loader" ng-hide="students"><img src="images/loader.GIF"></div>
                 <!-- /.table-responsive -->
             </div>
             <!-- /.panel-body -->

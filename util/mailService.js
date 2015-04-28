@@ -44,9 +44,9 @@ var changePasswordMail = function (receiver) {
     };
 };
 
-
 module.exports = {
     sendEmail: function (receiver) {
+        'use strict';
         smtpTransport.sendMail(mailOptions(receiver), function (error, response) {
             if (error) {
                 logger.error(error);
@@ -57,6 +57,7 @@ module.exports = {
         });
     },
     changePasswordMail: function (receiver) {
+        'use strict';
         smtpTransport.sendMail(changePasswordMail(receiver), function (error, response) {
             if (error) {
                 logger.error(error);

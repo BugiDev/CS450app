@@ -116,7 +116,25 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
                     });
 
                 return deferred.promise;
+            };
 
+            this.resetPassword = function (id) {
+                var deferred = $q.defer();
+                $http.post(config.apiBaseURL + config.resetPasswordAdminUrl, {id: id})
+                    .success(function (data, status, headers, config) {
+                        console.log('Reset Admin Password Success!');
+                        console.debug(data);
+                        deferred.resolve(data);
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log('Reset Admin Password Error!');
+                        console.debug(data);
+                        deferred.reject({
+                            status: status,
+                            message: data
+                        });
+                    });
+                return deferred.promise;
             };
 
         });

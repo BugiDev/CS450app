@@ -117,5 +117,25 @@ require(['modules/professorModule/professor.module'], function (professorModule)
 
             };
 
+            this.resetPassword = function (id) {
+                var deferred = $q.defer();
+                $http.post(config.apiBaseURL + config.resetPasswordProfessorUrl, {id: id})
+                    .success(function (data, status, headers, config) {
+                        console.log('Reset Professor Password Success!');
+                        console.debug(data);
+                        deferred.resolve(data);
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log('Reset Professor Password Error!');
+                        console.debug(data);
+                        deferred.reject({
+                            status: status,
+                            message: data
+                        });
+                    });
+                return deferred.promise;
+
+            };
+
         });
 });

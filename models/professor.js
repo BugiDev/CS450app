@@ -50,17 +50,48 @@ professorSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
+professorSchema.statics.generateHash = function (password) {
+    'use strict';
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+professorSchema.statics.resetPassword = function(id){
+    'use strict';
+    var promise = new mongoose.Promise;
+    var self = this;
+    var password = generatePassword(12, false, /\d/, 'met');
+    this.findOneAndUpdate({'_id': id}, {password: self.generateHash(password)}, {upsert: false}).lean().exec().then(
+        function(data){
+            mailService.sendEmail({
+                email: data.email,
+                password: password,
+                accountType: 'PROFESSOR'
+            });
+            logger.info('Changed password for professor: ' + data._id);
+            promise.complete(data);
+        },
+        function(err){
+            logger.error(err);
+            promise.error(err);
+        }
+    );
+    return promise;
+};
+
 professorSchema.statics.authenticateProfessor = function (id) {
+    'use strict';
     return this.findOneAndUpdate({'_id': id}, {lastLoginDate: new Date()}, {upsert: false}).lean().exec();
 };
 
 professorSchema.statics.updateProfessor = function (professor) {
+    'use strict';
     return this.findOneAndUpdate({'_id': professor._id}, professor, {upsert: false}).lean().exec();
 };
 
 professorSchema.statics.createProfessor = function (professor) {
+    'use strict';
     var promise = new mongoose.Promise;
-    var self = this;
+    var Self = this;
     this.findOne({'email': professor.email}).exec().then(
         function (user) {
             var err;
@@ -74,7 +105,7 @@ professorSchema.statics.createProfessor = function (professor) {
                 promise.error(err);
             } else {
                 var password = generatePassword(12, false, /\d/, 'met');
-                var newUser = new self();
+                var newUser = new Self();
                 newUser.email = professor.email;
                 newUser.firstName = professor.firstName;
                 newUser.lastName = professor.lastName;
@@ -106,10 +137,12 @@ professorSchema.statics.createProfessor = function (professor) {
 };
 
 professorSchema.statics.deactivateProfessor = function (id) {
+    'use strict';
     return this.findOneAndUpdate({'_id': id}, {isActive: false}, {upsert: false}).lean().exec();
 };
 
 professorSchema.methods.logTime = function () {
+    'use strict';
     var promise = new mongoose.Promise;
     this.lastLoginDate = new Date();
     this.save(function (err) {

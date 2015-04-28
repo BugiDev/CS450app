@@ -38,10 +38,12 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div ng-hide="students.length > 0">There are no available students</div>
+                    <div ng-show="students.length === 0">There are no available students</div>
                 </div>
                 <!-- /.table-responsive -->
             </div>
+
+            <div class="loader" ng-hide="students"><img src="images/loader.GIF"></div>
             <!-- /.panel-body -->
         </div>
 
@@ -56,6 +58,7 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div id="morris-area-chart-lectures"></div>
+                    <div class="loader" ng-hide="chartDataLectures.length > 0"><img src="images/loader.GIF"></div>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -69,6 +72,7 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div id="morris-area-chart-labs"></div>
+                    <div class="loader" ng-hide="chartDataLabs.length > 0"><img src="images/loader.GIF"></div>
                 </div>
                 <!-- /.panel-body -->
             </div>

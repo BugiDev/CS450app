@@ -18,6 +18,7 @@ define([
             createNewAdminUrl: '/admin/createNewAdmin',
             deactivateAdminUrl: '/admin/deactivateAdmin',
             getAllAdminsUrl: '/admin/getAllAdmins',
+            resetPasswordAdminUrl: '/admin/resetPassword',
 
             getProfessorByIdUrl: '/professor/getProfessorByID/',
             setProfessorProfileUrl: '/professor/setProfessorProfile',
@@ -25,6 +26,7 @@ define([
             createNewProfessorUrl: '/professor/createNewProfessor',
             deactivateProfessorUrl: '/professor/deactivateProfessor',
             getAllProfessorsUrl: '/professor/getAllProfessors',
+            resetPasswordProfessorUrl: '/professor/resetPassword',
 
             getStudentByIdUrl: '/student/getStudentByID/',
             setStudentProfileUrl: '/student/setStudentProfile',
@@ -36,6 +38,7 @@ define([
             getAllActiveStudentsUrl: '/student/getAllActiveStudents',
             updatePreexamPointsUrl: '/student/updatePreexamPoints',
             updateExamPointsUrl: '/student/updateExamPoints',
+            resetPasswordStudentUrl: '/student/resetPassword',
 
             getAllAttendanceUrl: '/attendance/getAllAttendance',
             getAllLecturesUrl: '/attendance/lectures/getAllLectureAttendance',

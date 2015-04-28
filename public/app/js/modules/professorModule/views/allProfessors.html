@@ -34,12 +34,14 @@
                             <td><span class="fa fa-check color-green" ng-show="professor.isActive"></span><span class="fa fa-times color-met" ng-show="!professor.isActive"></span></td>
                             <td>{{professor.lastLoginDate | date:"dd/MM/yyyy " + at + " h:mma"}}
                             <td><button class="btn btn-default" ng-click="editProfessor(professor._id)" tooltip="Edit professor profile"><span class="fa fa-pencil"></span></button></td>
-                            <td><button class="btn btn-met" ng-click="showModalDialog(professor._id)" tooltip="Deactivate professor"><span class="fa fa-times-circle"></span></button></span></td>
+                            <td><button class="btn btn-met" ng-click="showModalDialog(professor._id, professor.firstName, professor.lastName)" tooltip="Deactivate professor"><span class="fa fa-times-circle"></span></button></td>
+                            <td><button class="btn btn-met" ng-click="showResetPasswordModalDialog(professor._id, professor.firstName, professor.lastName); $event.preventDefault();$event.stopPropagation();" tooltip="Reset password"><span class="fa fa-key"></span></button></td>
                         </tr>
                         </tbody>
                     </table>
-                    <div ng-hide="professors.length > 0">There are no available professors</div>
+                    <div ng-show="professors.length === 0">There are no available professors</div>
                 </div>
+                <div class="loader" ng-hide="professors"><img src="images/loader.GIF"></div>
                 <!-- /.table-responsive -->
             </div>
             <!-- /.panel-body -->

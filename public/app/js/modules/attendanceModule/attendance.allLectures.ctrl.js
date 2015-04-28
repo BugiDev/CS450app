@@ -7,7 +7,7 @@ require(['modules/attendanceModule/attendance.module'], function (attendanceModu
     attendanceModule
         .controller('allLecturesCtrl', function ($scope, attendanceService, $location) {
 
-            $scope.lectures = {};
+            $scope.lectures = undefined;
 
             $scope.init = function () {
                 attendanceService.getAllLectures().then(

@@ -5,11 +5,13 @@ require(['modules/panelModule/panel.module'], function (panelModule) {
     'use strict';
 
     panelModule
-        .controller('dashboardCtrl', function ($scope, studentsService, attendanceService, $filter, $location) {
+        .controller('dashboardCtrl', function ($scope, studentsService, attendanceService, $filter, $location, $timeout) {
 
-            $scope.students = {};
+            $scope.students = undefined;
             $scope.chartDataLectures = [];
             $scope.chartDataLabs = [];
+
+            $scope.$self = $('.content-holder');
 
             $scope.init = function () {
                 studentsService.getAllActiveStudents().then(
@@ -79,11 +81,17 @@ require(['modules/panelModule/panel.module'], function (panelModule) {
                 });
             };
 
-            $scope.init();
+            //$scope.init();
 
             $scope.editStudentPoints = function(id){
                 $location.path('/editStudentPoints/' + id);
             };
+
+            $scope.$on('$viewContentLoaded', function (event, args) {
+                $timeout(function(){
+                    $scope.init();
+                }, 500);
+            });
 
         });
 });

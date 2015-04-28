@@ -111,6 +111,34 @@ studentSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
+studentSchema.statics.generateHash = function (password) {
+    'use strict';
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+studentSchema.statics.resetPassword = function(id){
+    'use strict';
+    var promise = new mongoose.Promise;
+    var self = this;
+    var password = generatePassword(12, false, /\d/, 'met');
+    this.findOneAndUpdate({'_id': id}, {password: self.generateHash(password)}, {upsert: false}).lean().exec().then(
+        function(data){
+            mailService.sendEmail({
+                email: data.email,
+                password: password,
+                accountType: 'STUDENT'
+            });
+            logger.info('Changed password for student: ' + data._id);
+            promise.complete(data);
+        },
+        function(err){
+            logger.error(err);
+            promise.error(err);
+        }
+    );
+    return promise;
+};
+
 studentSchema.statics.authenticateStudent = function (id) {
     'use strict';
     return this.findOneAndUpdate({'_id': id}, {lastLoginDate: new Date()}, {upsert: false}).lean().exec();

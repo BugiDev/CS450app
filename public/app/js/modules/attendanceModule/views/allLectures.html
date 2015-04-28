@@ -32,8 +32,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div ng-hide="lectures.length > 0">There are no available lectures</div>
+                    <div ng-show="lectures.length === 0">There are no available lectures</div>
                 </div>
+
+                <div class="loader" ng-hide="lectures"><img src="images/loader.GIF"></div>
                 <!-- /.table-responsive -->
             </div>
             <!-- /.panel-body -->

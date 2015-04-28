@@ -7,7 +7,7 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
     adminModule
         .controller('allAdminsCtrl', function ($scope, adminsService, userService, $rootScope, ModalService, $location, $state) {
 
-            $scope.admins = {};
+            $scope.admins = undefined;
 
             $scope.init = function () {
                 adminsService.getAllAdmins().then(
@@ -46,16 +46,13 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
                 $state.go('panel.content.editProfile');
             };
 
-            $scope.showModalDialog = function(id) {
-                var adm = _.find($scope.admins, function (admin) {
-                    return admin._id === id;
-                });
+            $scope.showModalDialog = function(id, firstName, lastName) {
                 ModalService.showModal({
                     templateUrl: 'js/modules/modalDialogModule/views/confirmModal.html',
                     controller: 'confirmModalCtrl',
                     inputs: {
-                        firstName: adm.firstName,
-                        lastName: adm.lastName
+                        firstName: firstName,
+                        lastName: lastName
                     }
                 }).then(function(modal) {
                     modal.element.modal();
@@ -65,6 +62,35 @@ require(['modules/adminModule/admin.module'], function (adminModule) {
                         }
                     });
                 });
+            };
+
+            $scope.showResetPasswordModalDialog = function(id, firstName, lastName) {
+                ModalService.showModal({
+                    templateUrl: 'js/modules/modalDialogModule/views/resetPasswordModal.html',
+                    controller: 'resetPasswordModalCtrl',
+                    inputs: {
+                        firstName: firstName,
+                        lastName: lastName
+                    }
+                }).then(function(modal) {
+                    modal.element.modal();
+                    modal.close.then(function(result) {
+                        if(result){
+                            $scope.resetPassword(id);
+                        }
+                    });
+                });
+            };
+
+            $scope.resetPassword = function (id) {
+                adminsService.resetPassword(id).then(
+                    function (data) {
+                        $rootScope.$broadcast('toast-success', { message: 'Professor: ' + data.firstName + ' ' + data.lastName + ' password reset'});
+                    }, function (err) {
+                        console.log(err);
+                        $rootScope.$broadcast('toast-error', { message: err});
+                    }
+                );
             };
 
         });

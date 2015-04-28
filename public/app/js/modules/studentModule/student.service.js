@@ -188,5 +188,25 @@ require(['modules/studentModule/student.module'], function (studentModule) {
 
             };
 
+            this.resetPassword = function (id) {
+                var deferred = $q.defer();
+                $http.post(config.apiBaseURL + config.resetPasswordStudentUrl, {id: id})
+                    .success(function (data, status, headers, config) {
+                        console.log('Reset Student Password Success!');
+                        console.debug(data);
+                        deferred.resolve(data);
+                    }).
+                    error(function (data, status, headers, config) {
+                        console.log('Reset Student Password Error!');
+                        console.debug(data);
+                        deferred.reject({
+                            status: status,
+                            message: data
+                        });
+                    });
+                return deferred.promise;
+
+            };
+
         });
 });

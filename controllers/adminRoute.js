@@ -137,4 +137,21 @@ module.exports = function (app, permissionMiddleware) {
             });
     });
 
+    app.post('/admin/resetPassword', permissionMiddleware.adminApproved, function (req, res, next) {
+        if (!req.body.id) {
+            logger.error('You have to provide id for resetting password for an admin!');
+            res.status(404);
+            res.json('You have to provide id for resetting password for an admin!');
+        } else {
+            Admin.resetPassword(req.body.id).then(
+                function (data) {
+                    logger.info('Reset password for an admin: ' + data._id);
+                    res.json(data);
+                }, function (err) {
+                    logger.error(err);
+                    res.json(err);
+                });
+        }
+    });
+
 };

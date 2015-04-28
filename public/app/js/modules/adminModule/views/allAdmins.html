@@ -35,12 +35,15 @@
                             <td>{{admin.lastLoginDate | date:"dd/MM/yyyy " + at + " h:mma"}}
                             <td ng-if="isCurrentUser(admin._id)"><button class="btn btn-default" ng-click="editMyProfile()" tooltip="Edit your profile"><span class="fa fa-pencil"></span></button></td>
                             <td ng-if="!isCurrentUser(admin._id)"><button class="btn btn-default" ng-click="editAdmin(admin._id)" tooltip="Edit admin profile"><span class="fa fa-pencil"></span></button></td>
-                            <td><button class="btn btn-met" ng-click="showModalDialog(admin._id)" ng-hide="isCurrentUser(admin._id)" tooltip="Deactivate admin"><span class="fa fa-times-circle"></span></button></span></td>
+                            <td><button class="btn btn-met" ng-click="showModalDialog(admin._id, admin.firstName, admin.lastName)" ng-hide="isCurrentUser(admin._id)" tooltip="Deactivate admin"><span class="fa fa-times-circle"></span></button></td>
+                            <td><button class="btn btn-met" ng-click="showResetPasswordModalDialog(admin._id, admin.firstName, admin.lastName); $event.preventDefault();$event.stopPropagation();" tooltip="Reset password"><span class="fa fa-key"></span></button></td>
                         </tr>
                         </tbody>
                     </table>
-                    <div ng-hide="admins.length > 0">There are no available admins</div>
+                    <div ng-show="admins.length === 0">There are no available admins</div>
                 </div>
+
+                <div class="loader" ng-hide="admins"><img src="images/loader.GIF"></div>
                 <!-- /.table-responsive -->
             </div>
             <!-- /.panel-body -->
