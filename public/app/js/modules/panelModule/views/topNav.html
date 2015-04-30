@@ -28,7 +28,7 @@
             </li>
             <li ng-hide="user.userType !== 'ADMIN'"><a ui-sref="panel.content.addNewStudent"><i class="fa fa-graduation-cap fa-fw"></i> Add New Student</a>
             </li>
-            <li><a ui-sref="panel.content.myProfile"><i class="fa fa-gear fa-fw"></i> My Settings</a>
+            <li><a ng-click="goToEditProfile()"><i class="fa fa-gear fa-fw"></i> My Settings</a>
             </li>
             <li class="divider"></li>
             <li><a ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>

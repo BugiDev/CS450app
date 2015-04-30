@@ -8,6 +8,7 @@ define([
     'modules/panelModule/panel.module',
     'modules/modalDialogModule/modal.module',
     'modules/studentModule/student.module',
+    'modules/studentViewModule/studentView.module',
     'modules/professorModule/professor.module',
     'modules/adminModule/admin.module',
     'modules/attendanceModule/attendance.module',
@@ -40,6 +41,7 @@ define([
             'cs450app.professor',
             'cs450app.admin',
             'cs450app.attendance',
+            'cs450app.studentView',
             'LocalStorageModule',
             'ncy-angular-breadcrumb',
             'ImageCropper',
@@ -103,6 +105,48 @@ define([
                     ncyBreadcrumb: {
                         skip: true // Never display this state in breadcrumb.
                     }
+                }).state('panel.studentView', {
+                    url: '^/student/dashboard',
+                    views: {
+                        'top-nav': {
+                            controller: 'topNavCtrl',
+                            templateUrl: 'js/modules/panelModule/views/topNav.html'
+                        },
+                        'content-holder': {
+                            controller: 'studentViewDashboardCtrl',
+                            templateUrl: 'js/modules/studentViewModule/views/studentView.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['student'],
+                            redirectTo: 'auth'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        skip: true // Never display this state in breadcrumb.
+                    }
+                }).state('panel.studentViewEditProfile', {
+                    url: '^/student/editProfile',
+                    views: {
+                        'top-nav': {
+                            controller: 'topNavCtrl',
+                            templateUrl: 'js/modules/panelModule/views/topNav.html'
+                        },
+                        'content-holder': {
+                            controller: 'studentViewEditProfileCtrl',
+                            templateUrl: 'js/modules/studentViewModule/views/studentView.editProfile.html'
+                        }
+                    },
+                    data: {
+                        permissions: {
+                            only: ['student'],
+                            redirectTo: 'auth'
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        skip: true // Never display this state in breadcrumb.
+                    }
                 }).state('panel.content.dashboard', {
                     url: '^/dashboard',
                     views: {
@@ -114,7 +158,7 @@ define([
                     data: {
                         permissions: {
                             except: ['student', 'anonymous'],
-                            redirectTo: 'auth'
+                            redirectTo: 'panel.studentView'
                         }
                     },
                     ncyBreadcrumb: {
@@ -418,12 +462,12 @@ define([
             Permission.defineRole('anonymous', function (stateParams) {
                 var deferred = $q.defer();
                 userService.isAuthenticated().then(function (data) {
-                    if(data){
+                    if (data) {
                         deferred.reject();
-                    }else{
+                    } else {
                         deferred.resolve();
                     }
-                }, function(err){
+                }, function (err) {
                     deferred.reject();
                 });
                 return deferred.promise;
@@ -432,12 +476,12 @@ define([
             Permission.defineRole('admin', function (stateParams) {
                 var deferred = $q.defer();
                 userService.isAuthenticated().then(function (data) {
-                    if(data &&  userService.user.userType === roles.admin){
+                    if (data && userService.user.userType === roles.admin) {
                         deferred.resolve();
-                    }else{
+                    } else {
                         deferred.reject();
                     }
-                }, function(err){
+                }, function (err) {
                     deferred.reject();
                 });
                 return deferred.promise;
@@ -446,12 +490,12 @@ define([
             Permission.defineRole('professor', function (stateParams) {
                 var deferred = $q.defer();
                 userService.isAuthenticated().then(function (data) {
-                    if(data && userService.user.userType === roles.professor){
+                    if (data && userService.user.userType === roles.professor) {
                         deferred.resolve();
-                    }else{
+                    } else {
                         deferred.reject();
                     }
-                }, function(err){
+                }, function (err) {
                     deferred.reject();
                 });
                 return deferred.promise;
@@ -460,40 +504,17 @@ define([
             Permission.defineRole('student', function (stateParams) {
                 var deferred = $q.defer();
                 userService.isAuthenticated().then(function (data) {
-                    if(data && userService.user.userType === roles.student){
+                    if (data && userService.user.userType === roles.student) {
                         deferred.resolve();
-                    }else{
+                    } else {
                         deferred.reject();
                     }
-                }, function(err){
+                }, function (err) {
                     deferred.reject();
                 });
                 return deferred.promise;
             });
 
-            /*            $rootScope.$on('$stateChangeStart', function (event, next, current) {
-             // if route requires auth and user is not logged in
-
-             userService.isAuthenticated().then(
-             function (data) {
-             console.log('Auth check');
-             console.debug(data);
-             if (!data) {
-             $location.path('/login');
-             }
-             */
-            /*                        if (!routeClean($location.url())) {
-             // redirect back to login
-             $location.path('/login');
-             }*/
-            /*
-             }, function (data) {
-             console.log('Auth check error');
-             console.debug(data);
-             $location.path('/login');
-             }
-             );
-             });*/
         }).factory('APIInterceptor', function ($rootScope, $location, $q) {
             return {
                 response: function (response) {

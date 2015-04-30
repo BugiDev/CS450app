@@ -1,0 +1,263 @@
+<div class="container  at-view-slide-in-right at-view-slide-out-right student-view-container">
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default student-dashboard">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Student dashboard
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <div class="user-info">
+                                <span class="label">First Name</span>
+                                <br/>
+                                <span class="info">{{student.firstName}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Last Name</span>
+                                <br/>
+                                <span class="info">{{student.lastName}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Email</span>
+                                <br/>
+                                <span class="info">{{student.email}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Generation</span>
+                                <br/>
+                                <span class="info">{{student.generation}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Index Number</span>
+                                <br/>
+                                <span class="info">{{student.indexNum}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Student Type</span>
+                                <br/>
+                                <span class="info">{{student.studentType}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Preexam Points</span>
+                                <br/>
+                                <span class="info">{{preexamPoints}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Exam Points</span>
+                                <br/>
+                                <span class="info">{{student.examPoints.pointsAchieved || 0}} / {{student.examPoints.maxPoints || 0}}</span>
+                            </div>
+
+                            <div class="user-info">
+                                <span class="label">Total points</span>
+                                <br/>
+                                <span class="form-static-usertype user-type">{{totalPoints}}</span>
+                            </div>
+
+                            <div class="points-edit-button">
+                                <button ng-click="editProile()" class="btn btn-met">Edit profile</button>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6" ng-show="student.picture">
+                            <div class="form-group center-text">
+                                <span class="label">Student picture</span>
+
+                                <div class="image-crop-result">
+                                    <img ng-src="{{ student.picture }}" alt="The Cropped Image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" ng-hide="student.picture">
+                            <div class="form-group center-text">
+                                <span class="label">Student picture</span>
+
+                                <div class="image-crop-result">
+                                    <img src="images/photo.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+
+        </div>
+        <!-- /.col-lg-8 -->
+
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+
+        <div class="col-lg-12">
+
+            <tabset class="tab-general">
+                <tab heading="Homework Assignments">
+                    <div class="tab-content">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Homework assignment number</th>
+                                <th>Achieved points</th>
+                                <th>Max points</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="homework in student.preexamPoints.homeworkAssignment">
+                                <td>Homework assignment {{homework.ordinalNum}}</td>
+                                <td>{{homework.pointsAchieved}}</td>
+                                <td>{{homework.maxPoints}}</td>
+                                <td>{{homework.remark}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+                <tab heading="Tests">
+                    <div class="tab-content">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Tests number</th>
+                                <th>Achieved points</th>
+                                <th>Max points</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="test in student.preexamPoints.tests">
+                                <td>Test {{test.ordinalNum}}</td>
+                                <td>{{test.pointsAchieved}}</td>
+                                <td>{{test.maxPoints}}</td>
+                                <td>{{test.remark}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+                <tab heading="Projects">
+                    <div class="tab-content">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Projects number</th>
+                                <th>Achieved points</th>
+                                <th>Max points</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="project in student.preexamPoints.projects">
+                                <td>Project {{project.ordinalNum}}</td>
+                                <td>{{project.pointsAchieved}}</td>
+                                <td>{{project.maxPoints}}</td>
+                                <td>{{project.remark}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+                <tab heading="Class Activity">
+                    <div class="tab-content">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Class Activity number</th>
+                                <th>Achieved points</th>
+                                <th>Max points</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="classActivity in student.preexamPoints.classActivity">
+                                <td>Class Activity {{classActivity.ordinalNum}}</td>
+                                <td>{{classActivity.pointsAchieved}}</td>
+                                <td>{{classActivity.maxPoints}}</td>
+                                <td>{{classActivity.remark}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+                <tab heading="Colloquiums">
+                    <div class="tab-content">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Colloquium number</th>
+                                <th>Achieved points</th>
+                                <th>Max points</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="colloquium in student.preexamPoints.colloquium">
+                                <td>Colloquium {{colloquium.ordinalNum}}</td>
+                                <td>{{colloquium.pointsAchieved}}</td>
+                                <td>{{colloquium.maxPoints}}</td>
+                                <td>{{colloquium.remark}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+                <tab heading="Seminar Assignments">
+                    <div class="tab-content">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Seminar Assignment number</th>
+                                <th>Achieved points</th>
+                                <th>Max points</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="seminarAssignment in student.preexamPoints.seminarAssignment">
+                                <td>Seminar Assignment {{seminarAssignment.ordinalNum}}</td>
+                                <td>{{seminarAssignment.pointsAchieved}}</td>
+                                <td>{{seminarAssignment.maxPoints}}</td>
+                                <td>{{seminarAssignment.remark}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+                <tab heading="Exam Points">
+                    <div class="tab-content">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Achieved points</th>
+                                <th>Max points</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{student.examPoints.pointsAchieved}}</td>
+                                <td>{{student.examPoints.maxPoints}}</td>
+                                <td>{{student.examPoints.remark}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>

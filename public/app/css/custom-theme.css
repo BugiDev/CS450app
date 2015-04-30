@@ -235,3 +235,15 @@ html, body{
     display:block;
     margin: 0 auto 20px auto;
 }
+
+.student-view-container{
+    background-color: #fff;
+}
+
+.student-dashboard{
+    margin-top: 50px;
+}
+
+.navbar-top-links .dropdown-menu li a{
+    cursor: pointer;
+}

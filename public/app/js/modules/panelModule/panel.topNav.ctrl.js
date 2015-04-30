@@ -5,7 +5,7 @@ require(['modules/panelModule/panel.module'], function (dashboardModule) {
     'use strict';
 
     dashboardModule
-        .controller('topNavCtrl', function ($scope, userService) {
+        .controller('topNavCtrl', function ($scope, userService, $state) {
 
             $scope.user = {};
 
@@ -50,6 +50,14 @@ require(['modules/panelModule/panel.module'], function (dashboardModule) {
 
             $scope.logout = function () {
                 userService.logout();
+            };
+
+            $scope.goToEditProfile = function(){
+                if($scope.user.userType === 'STUDENT'){
+                    $state.go('panel.studentViewEditProfile');
+                }else{
+                    $state.go('panel.content.editProfile');
+                }
             };
 
         });
