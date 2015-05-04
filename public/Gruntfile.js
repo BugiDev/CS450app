@@ -167,7 +167,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= projectConf.deploy %>',
-                    src: ['*.html', 'views/{,*/}*.html'],
+                    src: ['*.html', 'js/**/*.html'],
                     dest: '<%= projectConf.deploy %>'
                 }]
             }
@@ -203,7 +203,7 @@ module.exports = function (grunt) {
             },
             deploy:{
                 cwd: '<%= projectConf.build %>',
-                src: ['**/*', '!css/*', '**/css/<%= projectConf.optimizedCSSOutFileName %>', '!js/**/*', '**/js/<%= projectConf.optimizedJSOutFileName %>'],
+                src: ['**/*', '!css/*', '**/css/<%= projectConf.optimizedCSSOutFileName %>', '!js/**/*.js', '**/js/<%= projectConf.optimizedJSOutFileName %>'],
                 dest: '<%= projectConf.deploy %>',
                 expand: true
             }
@@ -285,9 +285,9 @@ module.exports = function (grunt) {
         'ngAnnotate',
         'toggleComments',
         'copy:deploy',
-        'imagemin',
-        'svgmin',
-        'cdnify',
+        /*'imagemin',
+        'svgmin',*/
+        /*'cdnify',*/
         'htmlmin',
         'requirejs:deploy'
     ]);

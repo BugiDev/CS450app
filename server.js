@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var permissionMiddleware = require('./middleware/permissionMiddleware');
+var colors = require('colors/safe');
 
 // DB ======================================================================
 var configDB = require('./config/database.js');
@@ -16,21 +17,24 @@ mongoose.connect(configDB.url + configDB.dbName);
 var db = mongoose.connection;
 db.on('error', function () {
     'use strict';
-    console.error('DB connection error!');
+    console.error(colors.red('DB connection error!'));
 });
 db.once('open', function () {
     'use strict';
-    console.info('DB connection success!');
+    console.info(colors.green('DB connection success!'));
 });
 
 require('./config/passport')(passport);
 
 
 if(process.argv[2] === 'dev'){
+    console.log(colors.green('Started dev server'));
     app.use('/', express.static(path.join(__dirname, 'public/app')));
 }else if(process.argv[2] === 'deploy'){
+    console.log(colors.blue('Started deploy server'));
     app.use('/', express.static(path.join(__dirname, 'public/deploy')));
 }else{
+    console.log(colors.green('Started dev server'));
     app.use('/', express.static(path.join(__dirname, 'public/app')));
 }
 
@@ -62,7 +66,7 @@ require('./controllers/attendanceRoute.js')(app, permissionMiddleware);
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log(colors.green('The magic happens on port ' + port));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

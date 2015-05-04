@@ -129,6 +129,13 @@ html, body{
     padding-bottom: 50px;
 }
 
+.page-wrapper{
+    height: 100%;
+    display:block;
+    overflow:auto;
+    padding-bottom: 50px;
+}
+
 #wrapper{
     overflow: hidden;
 }
