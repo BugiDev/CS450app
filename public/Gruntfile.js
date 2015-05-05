@@ -278,6 +278,7 @@ module.exports = function (grunt) {
     grunt.registerTask('deploy',[
         'clean:build',
         'clean:deploy',
+        'build-optimized',
         'jshint:deploy',
         'copy:build',
         'autoprefixer',

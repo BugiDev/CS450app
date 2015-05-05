@@ -10,6 +10,17 @@ var session = require('express-session');
 var permissionMiddleware = require('./middleware/permissionMiddleware');
 var colors = require('colors/safe');
 
+if(process.argv[2] === 'dev'){
+    console.log(colors.green('Started dev server'));
+    app.use('/', express.static(path.join(__dirname, 'public/app')));
+}else if(process.argv[2] === 'deploy'){
+    console.log(colors.blue('Started deploy server'));
+    app.use('/', express.static(path.join(__dirname, 'public/deploy')));
+}else{
+    console.log(colors.green('Started dev server'));
+    app.use('/', express.static(path.join(__dirname, 'public/app')));
+}
+
 // DB ======================================================================
 var configDB = require('./config/database.js');
 var mongoose = require('mongoose');
@@ -25,18 +36,6 @@ db.once('open', function () {
 });
 
 require('./config/passport')(passport);
-
-
-if(process.argv[2] === 'dev'){
-    console.log(colors.green('Started dev server'));
-    app.use('/', express.static(path.join(__dirname, 'public/app')));
-}else if(process.argv[2] === 'deploy'){
-    console.log(colors.blue('Started deploy server'));
-    app.use('/', express.static(path.join(__dirname, 'public/deploy')));
-}else{
-    console.log(colors.green('Started dev server'));
-    app.use('/', express.static(path.join(__dirname, 'public/app')));
-}
 
 app.use(cookieParser('bogdanbegovic'));
 app.use(bodyParser({limit: '50mb'}));

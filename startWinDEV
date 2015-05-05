@@ -1,0 +1,3 @@
+nodemon server.js dev
+echo Type "rs" to restart server or Ctrl + C to stop server
+pause > nul

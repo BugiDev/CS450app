@@ -1,0 +1,9 @@
+npm install
+npm install -g bower grunt grunt-cli jshint requirejs nodemon
+::node initDB/testDBData
+node initDB/initDBData
+cd public
+npm install
+bower install
+echo Initialization successfully finished
+pause

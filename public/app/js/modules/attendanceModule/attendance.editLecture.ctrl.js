@@ -17,7 +17,7 @@ require(['modules/attendanceModule/attendance.module'], function (attendanceModu
                 var tradStudentQ = $q.defer();
                 var attendanceQ = $q.defer();
                 var tradStudentPromise = tradStudentQ.promise;
-                var attendacePromise = attendanceQ.promise;
+                var attendancePromise = attendanceQ.promise;
 
                 studentsService.getAllTraditionalStudents().then(
                     function (data) {
@@ -38,7 +38,7 @@ require(['modules/attendanceModule/attendance.module'], function (attendanceModu
                     }
                 );
 
-                $q.all([tradStudentPromise, attendacePromise]).then(
+                $q.all([tradStudentPromise, attendancePromise]).then(
                     function(data){
                         _.each($scope.students, function (element, index, list) {
                             element.isChecked = false;
@@ -47,7 +47,7 @@ require(['modules/attendanceModule/attendance.module'], function (attendanceModu
                                     element.isChecked = true;
                                 }
                             });
-                        })
+                        });
                     },
                     function(err){
                         console.log(err);
@@ -62,7 +62,7 @@ require(['modules/attendanceModule/attendance.module'], function (attendanceModu
             $scope.resetForm = function () {
                 _.each($scope.students, function (element, index, list) {
                     element.isChecked = false;
-                })
+                });
             };
 
             $scope.editLecture = function () {
@@ -88,7 +88,7 @@ require(['modules/attendanceModule/attendance.module'], function (attendanceModu
                         $rootScope.$broadcast('toast-error', { message: err});
                     }
                 );
-            }
+            };
 
         });
 });

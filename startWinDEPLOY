@@ -1,0 +1,4 @@
+grunt deploy
+nodemon server.js deploy
+echo Type "rs" to restart server or Ctrl + C to stop server
+pause > nul
