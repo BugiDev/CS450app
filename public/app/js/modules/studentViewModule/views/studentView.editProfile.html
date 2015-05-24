@@ -46,16 +46,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input class="form-control" placeholder="Input Email (ex. bogdan@mail.com)"
-                                                   name="email" ng-model="user.email" class="form-control"
-                                                   email-validator
-                                                   ng-required="true">
-
-                                            <div class="error_messages" ng-messages="editProfileForm.email.$error"
-                                                 ng-if="(editProfileForm.email.$touched || editProfileForm.$submitted) && !editProfileForm.email.$valid">
-                                                <div ng-message="required">You have to input your email address</div>
-                                                <div ng-message="email">Email has to be valid (ex. peter@mail.com)</div>
-                                            </div>
+                                            <p class="form-control-static">{{user.email}}</p>
                                         </div>
 
                                         <div class="form-group">
@@ -83,45 +74,17 @@
                                             <br>
                                         </div>
 
-                                        <div class="form-group" ng-if="user.userType === 'STUDENT'">
-                                            <label>Student generation</label>
-                                            <input class="form-control"
-                                                   placeholder="Input Student generation (ex. 2014/2015)" name="generation"
-                                                   ng-model="user.generation" class="form-control"
-                                                   ng-required="true">
-
-                                            <div class="error_messages" ng-messages="editProfileForm.generation.$error"
-                                                 ng-if="(editProfileForm.generation.$touched || editProfileForm.$submitted) && !editProfileForm.generation.$valid">
-                                                <div ng-message="required">This field is required</div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label>Student generation</label>.
+                                            <p class="form-control-static">{{user.generation}}</p>
                                         </div>
-                                        <div class="form-group" ng-if="user.userType === 'STUDENT'">
+                                        <div class="form-group">
                                             <label>Student index number</label>
-                                            <input class="form-control"
-                                                   type="number"
-                                                   placeholder="Input Student index number(ex. 1041)" name="indexNum"
-                                                   ng-model="user.indexNum" class="form-control"
-                                                   ng-required="true">
-
-                                            <div class="error_messages" ng-messages="editProfileForm.indexNum.$error"
-                                                 ng-if="(editProfileForm.indexNum.$touched || editProfileForm.$submitted) && !editProfileForm.indexNum.$valid">
-                                                <div ng-message="required">This field is required</div>
-                                                <div ng-message="number">You have to input number</div>
-                                            </div>
+                                            <p class="form-control-static">{{user.indexNum}}</p>
                                         </div>
-                                        <div class="form-group" ng-if="user.userType === 'STUDENT'">
+                                        <div class="form-group">
                                             <label>Student type</label>
-                                            <select class="form-control" name="studentType" ng-model="user.studentType"
-                                                    class="form-control"
-                                                    ng-required="true">
-                                                <option>Traditional</option>
-                                                <option>Internet</option>
-                                            </select>
-
-                                            <div class="error_messages" ng-messages="editProfileForm.studentType.$error"
-                                                 ng-if="(editProfileForm.studentType.$touched || editProfileForm.$submitted) && !editProfileForm.studentType.$valid">
-                                                <div ng-message="required">This field is required</div>
-                                            </div>
+                                            <p class="form-control-static">{{user.studentType}}</p>
                                         </div>
 
                                         <button type="submit" id="submit" class="btn btn-met" value="Submit"> Submit

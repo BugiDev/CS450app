@@ -37,7 +37,7 @@ db.once('open', function () {
                 var admin = new Admin();
                 admin.firstName = 'admin';
                 admin.lastName = 'admin';
-                admin.email = 'admin@admin.com';
+                admin.email = 'admin@spta.com';
                 admin.password = admin.generateHash('admin123');
                 admin.save(function (err) {
                     if (err) {

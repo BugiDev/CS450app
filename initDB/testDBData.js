@@ -22,20 +22,20 @@ var deferredLectures = Q.defer();
 var defaultAdmin = new Admin();
 defaultAdmin.firstName = 'admin';
 defaultAdmin.lastName = 'admin';
-defaultAdmin.email = 'admin@cs450app.com';
+defaultAdmin.email = 'admin@spta.com';
 defaultAdmin.password = defaultAdmin.generateHash('admin123');
 
 var defaultProfessor = new Professor();
 defaultProfessor.firstName = 'professor';
 defaultProfessor.lastName = 'professor';
-defaultProfessor.email = 'professor@cs450app.com';
+defaultProfessor.email = 'professor@spta.com';
 defaultProfessor.password = defaultProfessor.generateHash('professor123');
 
 
 var defaultStudent1 = new Student();
 defaultStudent1.firstName = 'student1';
 defaultStudent1.lastName = 'student1';
-defaultStudent1.email = 'student1@cs450app.com';
+defaultStudent1.email = 'student1@spta.com';
 defaultStudent1.password = defaultStudent1.generateHash('student123');
 defaultStudent1.indexNum = 1;
 defaultStudent1.generation = '2014/2015';
@@ -102,7 +102,7 @@ defaultStudent1.examPoints = {
 var defaultStudent2 = new Student();
 defaultStudent2.firstName = 'student2';
 defaultStudent2.lastName = 'student2';
-defaultStudent2.email = 'student2@cs450app.com';
+defaultStudent2.email = 'student2@spta.com';
 defaultStudent2.password = defaultStudent1.generateHash('student123');
 defaultStudent2.indexNum = 2;
 defaultStudent2.generation = '2014/2015';
@@ -169,7 +169,7 @@ defaultStudent2.examPoints = {
 var defaultStudent3 = new Student();
 defaultStudent3.firstName = 'student3';
 defaultStudent3.lastName = 'student3';
-defaultStudent3.email = 'student3@cs450app.com';
+defaultStudent3.email = 'student3@spta.com';
 defaultStudent3.password = defaultStudent1.generateHash('student123');
 defaultStudent3.indexNum = 3;
 defaultStudent3.generation = '2014/2015';
@@ -249,7 +249,7 @@ db.once('open', function () {
     var labDates = new Date();
 //var labDates = [values...]
 
-    Admin.findOne({email: 'admin@cs450app.com'}).then(
+    Admin.findOne({email: 'admin@spta.com'}).then(
         function (data) {
             if (!data) {
                 defaultAdmin.save(function (err) {
@@ -270,7 +270,7 @@ db.once('open', function () {
         }
     );
 
-    Professor.findOne({email: 'professor@cs450app.com'}).then(
+    Professor.findOne({email: 'professor@spta.com'}).then(
         function (data) {
             if (!data) {
                 defaultProfessor.save(function (err) {
@@ -291,7 +291,7 @@ db.once('open', function () {
         }
     );
 
-    Student.findOne({email: 'student1@cs450app.com'}).then(
+    Student.findOne({email: 'student1@spta.com'}).then(
         function (data) {
             if (!data) {
                 defaultStudent1.save(function (err) {
@@ -312,7 +312,7 @@ db.once('open', function () {
         }
     );
 
-    Student.findOne({email: 'student2@cs450app.com'}).then(
+    Student.findOne({email: 'student2@spta.com'}).then(
         function (data) {
             if (!data) {
                 defaultStudent2.save(function (err) {
@@ -333,7 +333,7 @@ db.once('open', function () {
         }
     );
 
-    Student.findOne({email: 'student3@cs450app.com'}).then(
+    Student.findOne({email: 'student3@spta.com'}).then(
         function (data) {
             if (!data) {
                 defaultStudent3.save(function (err) {

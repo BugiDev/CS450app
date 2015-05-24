@@ -3,6 +3,6 @@
  */
 
 module.exports = {
-    dbName: 'cs450app',
+    dbName: 'sptaDB',
     url : 'mongodb://localhost:27017/'
 };
